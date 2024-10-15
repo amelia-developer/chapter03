@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+.month-box {
+    position: relative;
+    padding-top: 2.4vw;
+    .number-month {
+        font-weight: 900;
+        font-size: 38px;
+    } // number-month종료
+    .text-unit {
+        font-size: 30px;
+    } // text-unit종료
+    .arrow-box {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 10%;
+        position: absolute;
+        top: 40%;
+        width: 80%;
+        button {
+            width: 5vw;
+            height: 5vw;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    } // arrow-box종료
+} // month-box종료
+
+.date-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 5vw;
+    table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: 1px solid #000;
+        thead {
+            border-bottom: 1px solid #000;
+            th {
+                font-size: 24px;
+                font-weight: 400;
+                height: 50px;
+                border-right: 1px solid #000;
+                &.saturday {
+                    color: blue;
+                }
+                &.sunday {
+                    color: red;
+                }
+            }
+        } // thead종료
+        tbody {
+            td {
+                font-size: 24px;
+                font-weight: 400;
+                height: 70px;
+                border-right: 1px solid #000;
+                border-bottom: 1px solid #000;
+            }
+        } // tbody종료
+    } // table종료
+} // date-box종료
