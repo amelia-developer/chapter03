@@ -57,6 +57,12 @@
                 height: 70px;
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
+                &.saturday {
+                    color: blue;
+                }
+                &.sunday {
+                    color: red;
+                }
             }
         } // tbody종료
     } // table종료
