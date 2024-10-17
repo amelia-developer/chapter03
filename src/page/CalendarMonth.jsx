@@ -8,7 +8,7 @@ const CalendarMonth = () => {
     resultMonth.push(month[i]);
   }
 
-  const onPrevMonth = () => { /**TODO:위에 for문으로 표현하는게 적절한 방법인지 */
+  const onPrevMonth = () => {
     if(currentMonth-1 < 1){
       setCurrentMonth(resultMonth[11])
     } else {
