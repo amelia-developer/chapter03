@@ -63,6 +63,9 @@
                 &.sunday {
                     color: red;
                 }
+                &.prev, &.next {
+                    color: #778899;
+                }
             }
         } // tbody종료
     } // table종료
