@@ -3,6 +3,19 @@
 .month-box {
     position: relative;
     padding-top: 2.4vw;
+    .number-year {
+        font-size: 38px;
+        font-weight: 900;
+        position: relative;
+        margin-right: 1.2vw;
+        &:after {
+            content: '.';
+            position: absolute;
+            bottom: 0;
+            right: -1vw;
+            display: inline-block;
+        }
+    } // number-year종료
     .number-month {
         font-weight: 900;
         font-size: 38px;

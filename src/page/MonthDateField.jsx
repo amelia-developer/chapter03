@@ -21,6 +21,10 @@ const MonthDateField = () => {
 
   let month = [1,2,3,4,5,6,7,8,9,10,11,12]
   let resultMonth = []
+  for (let i = 0; i < month.length; i++) {
+    resultMonth.push(month[i]);
+  }
+  
   const weeks = [
     {
         day: '일',
@@ -44,10 +48,6 @@ const MonthDateField = () => {
         day: '토',
     }
   ]
-
-  for (let i = 0; i < month.length; i++) {
-    resultMonth.push(month[i]);
-  }
   
   // 매월 '마지막일자'가 무슨요일인지
   const getLastDayMonth = () => {
@@ -66,15 +66,23 @@ const MonthDateField = () => {
   const onPrevMonth = () => {
     if(currentMonth-1 < 1){
       setCurrentMonth(resultMonth[11])
+      setCurrentYear(currentYear => currentYear - 1)
+      if(currentMonth === 1) {
+        alert(`${currentYear}년의 마지막 ${currentMonth}월입니다. ${currentYear-1}년 으로 넘어갑니다`)
+      }
     } else {
       setCurrentMonth(currentMonth-1)
     }
   }
 
   const onNextMonth = () => {
-    if(currentMonth+1 >= 13){
-      setCurrentMonth(resultMonth[0])
-    } else {
+    if(currentMonth+1 > 12){
+      setCurrentMonth(resultMonth[0]) // 1월로
+      setCurrentYear(currentYear => currentYear + 1)
+      if(currentMonth === 12) {
+        alert(`${currentYear}년의 마지막 ${currentMonth}월입니다. ${currentYear+1}년 으로 넘어갑니다`)
+      }
+    } else {      
       setCurrentMonth(currentMonth+1)
     }
   }
@@ -82,6 +90,7 @@ const MonthDateField = () => {
   return (
     <>
       <div className='month-box'>
+          <span className='number-year'>{currentYear}</span>
           <span className='number-month'>{currentMonth}</span>
           <span className='text-unit'>월</span>
           <div className='arrow-box'>
