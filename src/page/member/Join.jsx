@@ -18,7 +18,7 @@ const Join = () => {
     //     setLocalJoinID(e.target.value)
     // }
 
-    const onJoinFinish = (e) => {
+    const onJoinEnd = (e) => {
         e.preventDefault() // form태그의 기본제출방지
 
         // 유효성검사
@@ -52,7 +52,7 @@ const Join = () => {
     return (
         <div className="join-box">
             <h2>회원가입</h2>
-            <form onSubmit={onJoinFinish}>
+            <form onSubmit={onJoinEnd}>
                 <label><input type="text" placeholder="아이디를 입력하세요" ref={(el) => joinRef.current[0] = el} defaultValue={joinID}/></label>
                 <label><input type="password" placeholder="비밀번호를 입력하세요" ref={(el) => joinRef.current[1] = el} defaultValue={joinPW}/></label>
                 <button type="submit">가입완료</button>
