@@ -26,7 +26,7 @@
 
 .month-box {
     position: relative;
-    padding-top: 2.4vw;
+    padding-top: 10vw;
     .number-year {
         font-size: 38px;
         font-weight: 900;
@@ -52,7 +52,7 @@
         justify-content: space-between;
         margin: 0 10%;
         position: absolute;
-        top: 40%;
+        top: 66%;
         width: 80%;
         button {
             width: 5vw;
@@ -128,6 +128,8 @@
             position: absolute;
             right: 0;
             top: 5px;
+            display: block;
+            cursor: pointer;
         }
     }
     button {
@@ -164,8 +166,18 @@
         margin-left: 10px;
         background-color: #656565;
     }
-    .btn-logout {
-        margin-left: 10px;
-        background-color: #373737;
-    }
 } // join-box종료
+
+.btn-logout {
+    float: right;
+    background-color: #373737;
+    color: #fff;
+    margin: 0;
+    border: none;
+    height: 35px;
+    width: 15%;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    z-index: 20;
+} // btn-logout종료

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetLoginStatus } from '../redux/joinAction'
 import DayWeek from './DayWeek'
 import DayNumber from './DayNumber';
+import { useNavigate } from 'react-router-dom';
 
 const MonthDateField = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
@@ -87,8 +90,22 @@ const MonthDateField = () => {
     }
   }
   
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  // 상태구독
+  const loginStatus = useSelector(state => state.join.loginStatus)
+
+  const onLogoutEnd = () => {
+    dispatch(resetLoginStatus(false))
+    navigate(`/`)
+  }
+console.log(`loginStatus = ${loginStatus}`);
   return (
     <>
+      {
+          loginStatus ? <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button> : null
+      }
       <div className='month-box'>
           <span className='number-year'>{currentYear}</span>
           <span className='number-month'>{currentMonth}</span>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { fetchSetLogin, resetLoginStatus } from '../../redux/joinAction'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,11 +8,8 @@ const Login = () => {
     const joinRef = useRef([])
     const navigate = useNavigate()
 
-    // 상태구독
-    const loginStatus = useSelector(state => state.join.loginStatus)
-    const loginID = useSelector(state => state.join.joinID)
-    const loginPW = useSelector(state => state.join.joinPW)
-    const [visibilityText, setVisibilityText] = useState("visibility_off")
+    const [visibilityText, setVisibilityText] = useState("visibility")
+    const [inputType, setInputType] = useState("password")
 
     const onLoginStart = (e) => {
         e.preventDefault() // form태그의 기본제출방지
@@ -22,6 +19,7 @@ const Login = () => {
         }
         dispatch(fetchSetLogin(loginInfo))
         dispatch(resetLoginStatus(false))
+        navigate(`/date`)
     }
 
     const onJoinStart = () => {
@@ -29,16 +27,13 @@ const Login = () => {
         navigate(`/join`)
     }
 
-    const onLogoutEnd = () => {
-        dispatch(resetLoginStatus(false))
-    }
-
     const onPasswordCheck = () => {
-        setVisibilityText("visibility")
-        if(visibilityText === "visibility") {
+        if(inputType === "text") {
             setVisibilityText("visibility_off")
+            setInputType("password")
         } else {
-            setVisibilityText("visibility")
+            setVisibilityText("visibility")            
+            setInputType("text")
         }
     }
     return (
@@ -47,13 +42,10 @@ const Login = () => {
             <form onSubmit={onLoginStart}>
                 <label><input type="text" placeholder="아이디를 입력하세요" ref={(el) => joinRef.current[0] = el} defaultValue=""/></label>
                 <label>
-                    <input type="password" placeholder="비밀번호를 입력하세요" ref={(el) => joinRef.current[1] = el} defaultValue="" onClick={onPasswordCheck}/>
+                    <input type={inputType} placeholder="비밀번호를 입력하세요" ref={(el) => joinRef.current[1] = el} defaultValue="" onClick={onPasswordCheck}/>
                     <span className="material-icons toggleVisible">{visibilityText}</span>
                 </label>
                 <button type="submit">로그인</button>
-                {
-                    loginStatus ? <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button> : null
-                }
                 <button type="button" onClick={onJoinStart} className="btn-join">회원가입</button>
             </form>
         </div>
