@@ -7,6 +7,8 @@ export const SET_ID_JOIN = "SET_ID_JOIN"
 export const SET_PW_JOIN = "SET_PW_JOIN"
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_RESET_STATUS = "LOGIN_RESET_STATUS"
+export const INSERT_DATE_NUMBER = "INSERT_DATE_NUMBER"
+export const INSERT_MEMO_LIST = "INSERT_MEMO_LIST"
 
 // 액션생성자
 export const setIDjoin = (joinID) => ({
@@ -19,14 +21,24 @@ export const setPWjoin = (joinPW) => ({
     payload: joinPW
 })
 
-export const loginStatus = (loginStatus) => ({ // 파라미터없는 액션생성자: 액션의타입만을 이용해 상태업데이트 = 고정된 값을 설정할때
+export const loginStatus = (loginStatus) => ({
     type: LOGIN_SUCCESS,
     payload: loginStatus
 })
 
-export const resetLoginStatus = () => ({
+export const resetLoginStatus = () => ({ // 파라미터없는 액션생성자: 액션의타입만을 이용해 상태업데이트 = 고정된 값을 설정할때
     type: LOGIN_RESET_STATUS,
     payload: false
+})
+
+export const insertDateNumber = (selectDate) => ({
+    type: INSERT_DATE_NUMBER,
+    payload: selectDate
+})
+
+export const insertMemoList = (memoList) => ({
+    type: INSERT_MEMO_LIST,
+    payload: memoList
 })
 
 // 회원가입 액션
@@ -81,6 +93,51 @@ export const fetchSetLogin = (loginInfo) => {
                         }
                     })
                 }
+            })
+    }
+}
+
+export const fetchClickDateNumber = (selectDate, memoContent) => {
+    return dispatch => {
+        axios.post(`http://localhost:3001/memoList`, {
+            selectDate,
+            memoContent
+        })
+        .then(response => {
+            dispatch(insertDateNumber(response.data.selectDate))
+            dispatch(insertMemoList(response.data.memoContent))
+        })
+        .catch(error => {
+            console.error(error)
+        })
+
+    }
+}
+
+// 클릭한날짜에 대한 메모get액션
+export const fetchMemoList = () => {
+    return dispath => {
+        axios.get(`http://localhost:3001/memoList`)
+            .then(response => {
+                dispath(insertMemoList(response.data))
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+}
+
+// TODO:해야함_클릭한날짜에 대한 메모fetch액션(수정)
+export const fetchModifyMemo = (selectDate) => {
+console.log(`selectDate = ${selectDate}`);
+    return dispatch => {
+        axios.patch(`http://localhost:3001/memoList`)
+            .then(response => {
+console.log(`response.data = ${JSON.stringify(response.data)}`);
+                dispatch(insertMemoList(response.data))
+            })
+            .catch(error => {
+                console.error(error)
             })
     }
 }

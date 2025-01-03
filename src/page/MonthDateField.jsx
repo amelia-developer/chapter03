@@ -11,7 +11,7 @@ const MonthDateField = () => {
   const [currentOfDays, setCurrentOfDays] = useState(new Date(currentYear, currentMonth, 0).getDate())
   
   useEffect(() => {
-    setCurrentOfDays(new Date(currentYear, currentMonth, 0).getDate())
+      setCurrentOfDays(new Date(currentYear, currentMonth, 0).getDate())
   }, [currentYear, currentMonth])
 
   // 매월 '1일'이 무슨요일인지
@@ -100,7 +100,7 @@ const MonthDateField = () => {
     dispatch(resetLoginStatus(false))
     navigate(`/`)
   }
-console.log(`loginStatus = ${loginStatus}`);
+// console.log(`loginStatus = ${loginStatus}`);
   return (
     <>
       {
@@ -116,17 +116,20 @@ console.log(`loginStatus = ${loginStatus}`);
           </div>
       </div>
       <div className='date-box'>
-            <table>
-                <thead>
-                    <tr>
-                        <DayWeek weeks={weeks}></DayWeek>
-                    </tr>
-                </thead>
-                <tbody>
-                    <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate}></DayNumber>
-                </tbody>
-            </table> 
-        </div>
+          <table>
+              <thead>
+                  <tr>
+                      <DayWeek weeks={weeks}></DayWeek>
+                  </tr>
+              </thead>
+              <tbody>
+                  <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate}></DayNumber>
+              </tbody>
+          </table> 
+      </div>
+      <ul className="text-comment">
+          <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>
+      </ul>
     </>
   )
 }

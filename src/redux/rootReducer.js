@@ -3,10 +3,14 @@ import { combineReducers } from 'redux';
 const initialState = {
     joinID: '',
     joinPW: '',
-    loginStatus: false
+    loginStatus: false,
+    selectDate: null, // 내가클릭한날짜
+    memoList: [] // 입력되어 있는 메모들
 }
 
 const joinReducer = (state = initialState, action) => {
+    // console.log("Action Type:", action.type);
+    // console.log("Payload:", action.payload); // payload 값 확인
     switch (action.type) {
         case "SET_ID_JOIN":
             return {...state, joinID: action.payload}
@@ -16,6 +20,11 @@ const joinReducer = (state = initialState, action) => {
             return {...state, loginStatus: action.payload}
         case "LOGIN_RESET_STATUS": // 로그인 reset여부(초기화 됐냐, 안됐냐)
             return {...state, loginStatus: action.payload}
+        case "INSERT_DATE_NUMBER":
+            return {...state, selectDate: action.payload} 
+        case "INSERT_MEMO_LIST":
+// console.log(`action.payload = ${JSON.stringify(action.payload)}`);
+            return {...state, memoList: action.payload}
         default:
             return state
     }

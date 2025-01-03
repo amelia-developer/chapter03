@@ -94,6 +94,37 @@
                 height: 70px;
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
+                cursor: pointer;
+                position: relative;
+                .box {
+                    position: absolute;
+                    background-color: #fff;
+                    border: 1px solid #000;
+                    box-sizing: border-box;
+                    margin: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 10;
+                    width: 90%;
+                    height: 250px;
+                    font-size: 12px;
+                    text-align: left;
+                    padding: 10px;
+                    // display: none;
+                    .text-memo {
+                        margin: 0;
+                        textarea {
+                            width: 96%;
+                            height: inherit;
+                            resize: none;
+                            height: 190px;
+                        }    
+                    } // text-memo종료
+                    .btn-box {
+                        position: absolute;
+                        bottom: 10px;
+                    } // btn-box종료
+                } // box종료
                 &.saturday {
                     color: blue;
                 }
@@ -170,7 +201,7 @@
 
 .btn-logout {
     float: right;
-    background-color: #373737;
+    background-color: #53e;
     color: #fff;
     margin: 0;
     border: none;
@@ -181,3 +212,27 @@
     position: relative;
     z-index: 20;
 } // btn-logout종료
+
+.text-comment {
+    padding: 0 0 0 20px;
+    margin: 20px 0 0 0;
+    text-align: center;
+    li {
+        list-style: none;
+        span {
+            position: relative;
+            padding-left: 10px;
+            &:before {
+                content: '';
+                display: inline-block;
+                position: absolute;
+                top: 9px;
+                left: 0;
+                width: 3px;
+                height: 3px;
+                background-color: #000;
+                border-radius: 100%;
+            }    
+        }
+    }
+} // text-comment종료
