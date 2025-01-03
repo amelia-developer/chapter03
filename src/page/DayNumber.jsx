@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { fetchClickDateNumber, insertDateNumber, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
+import React, { memo, useEffect, useState } from 'react'
+import { fetchClickDateNumber, insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { current } from '@reduxjs/toolkit'
 
@@ -48,21 +48,25 @@ function DayNumber(props) {
     const dispatch = useDispatch()
     const [currentMemo, setCurrentMemo] = useState('')
     const [closeStatus, setCloseStatus] = useState(true)
+    const [memoID, setMemoID] = useState(null)
     // 상태구독
     const selectDate = useSelector(state => state.join.selectDate)
     const memoList = useSelector(state => state.join.memoList)
-    
+
     // 날짜에 대한 조회
     const onHandleDateNumber = (date) => {
 // console.log(`ttt`);
         setCloseStatus(false)
         dispatch(insertDateNumber(date))
-        dispatch(fetchMemoList(date))
+        dispatch(fetchAllMemoList(date))
 
-        const choiceMemo = memoList.find(value => value.selectDate === date)
-        if(choiceMemo) {
-            setCurrentMemo(choiceMemo.memoContent)
+        const dataMatch = memoList.find(value => value.selectDate === date)
+        if(dataMatch) {
+            setMemoID(dataMatch.id)
+            setCurrentMemo(dataMatch.memoContent)
+            dispatch(fetchMemoList(dataMatch.id))
         } else {
+            setMemoID(null)
             setCurrentMemo('')
         }
     }
@@ -73,8 +77,19 @@ function DayNumber(props) {
     }
 
     // 날짜에 대한 메모수정
-    const onDateMemoModify = (date) => {
-        dispatch(fetchModifyMemo(date))
+    const onDateMemoModify = (date, event) => {
+        const dataMatch = memoList.find(value => value.selectDate === date)
+        if(dataMatch) {
+            setMemoID(dataMatch.id)
+            setCurrentMemo(currentMemo)
+            dispatch(fetchModifyMemo({id: dataMatch.id, memoContent: currentMemo}))
+            
+            if(closeStatus === false) {
+                alert(`수정되었습니다`)
+            }
+        }
+        event.stopPropagation()
+        setCloseStatus(true)
     }
 
     // 날짜에 대한 메모닫기
@@ -87,9 +102,15 @@ function DayNumber(props) {
 
     useEffect(() => {
         // 초기 상태 설정
-        dispatch(fetchMemoList())
+        dispatch(fetchAllMemoList())
         dispatch(insertDateNumber(null))
     }, [dispatch]) // closeStatus를 의존성배열에서 제거하여 불필요한 재렌더링 방지
+
+    useEffect(() => {
+        if(memoID && currentMemo) {
+            dispatch(fetchModifyMemo({id: memoID, memoContent: currentMemo}))
+        }
+    }, [memoID, currentMemo])
 
     return (
         <>
@@ -111,7 +132,7 @@ function DayNumber(props) {
                                                     <div className="btn-box">
                                                         <button type="button" onClick={() => onDateMemoSave(element)}>저장</button>
                                                         <button type="button" onClick={(event) => onDateMemoClose(event)}>취소</button>
-                                                        <button type="button" onClick={() => onDateMemoModify(element)}>수정</button>
+                                                        <button type="button" onClick={(event) => onDateMemoModify(element, event)}>수정</button>
                                                     </div>
                                                 </div>
                                                 : null

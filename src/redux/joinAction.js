@@ -1,6 +1,7 @@
 import axios from "axios"
 import {v4 as uuid4} from 'uuid'
 import bcrypt from 'bcryptjs'
+import { memo } from "react"
 
 // 액션타입정의
 export const SET_ID_JOIN = "SET_ID_JOIN"
@@ -9,6 +10,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_RESET_STATUS = "LOGIN_RESET_STATUS"
 export const INSERT_DATE_NUMBER = "INSERT_DATE_NUMBER"
 export const INSERT_MEMO_LIST = "INSERT_MEMO_LIST"
+export const INSERT_MEMO = "INSERT_MEMO"
 
 // 액션생성자
 export const setIDjoin = (joinID) => ({
@@ -39,6 +41,11 @@ export const insertDateNumber = (selectDate) => ({
 export const insertMemoList = (memoList) => ({
     type: INSERT_MEMO_LIST,
     payload: memoList
+})
+
+export const insertMemo = (memo) => ({
+    type: INSERT_MEMO,
+    payload: memo
 })
 
 // 회원가입 액션
@@ -97,6 +104,7 @@ export const fetchSetLogin = (loginInfo) => {
     }
 }
 
+// 클릭한날짜에 대한 메모post액션(입력)
 export const fetchClickDateNumber = (selectDate, memoContent) => {
     return dispatch => {
         axios.post(`http://localhost:3001/memoList`, {
@@ -114,12 +122,12 @@ export const fetchClickDateNumber = (selectDate, memoContent) => {
     }
 }
 
-// 클릭한날짜에 대한 메모get액션
-export const fetchMemoList = () => {
-    return dispath => {
-        axios.get(`http://localhost:3001/memoList`)
+// 클릭한날짜에 대한 메모get액션(전체 불러오기)
+export const fetchAllMemoList = () => {
+    return dispatch => {
+        axios.get(`http://localhost:3001/memoList/`)
             .then(response => {
-                dispath(insertMemoList(response.data))
+                dispatch(insertMemoList(response.data))
             })
             .catch(error => {
                 console.error(error)
@@ -127,17 +135,31 @@ export const fetchMemoList = () => {
     }
 }
 
-// TODO:해야함_클릭한날짜에 대한 메모fetch액션(수정)
-export const fetchModifyMemo = (selectDate) => {
-console.log(`selectDate = ${selectDate}`);
+// 클릭한날짜에 대한 메모get액션(각각 불러오기)
+export const fetchMemoList = (memoData) => {
     return dispatch => {
-        axios.patch(`http://localhost:3001/memoList`)
+        axios.get(`http://localhost:3001/memoList/${memoData}`)
             .then(response => {
-console.log(`response.data = ${JSON.stringify(response.data)}`);
-                dispatch(insertMemoList(response.data))
+                dispatch(insertMemo(response.data))
             })
             .catch(error => {
                 console.error(error)
             })
+    }
+}
+
+// 클릭한날짜에 대한 메모fetch액션(수정)
+export const fetchModifyMemo = (selectDate) => {
+    return dispatch => {
+        const memoContent = selectDate.memoContent
+        axios.patch(`http://localhost:3001/memoList/${selectDate.id}`, {
+            memoContent: memoContent
+        })
+        .then(response => {
+            dispatch(insertMemo(response.data))
+        })
+        .catch(error => {
+            console.error(error)
+        })
     }
 }

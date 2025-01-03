@@ -4,8 +4,9 @@ const initialState = {
     joinID: '',
     joinPW: '',
     loginStatus: false,
-    selectDate: null, // 내가클릭한날짜
-    memoList: [] // 입력되어 있는 메모들
+    selectDate: null, // 내가 클릭한 날짜
+    memoList: [], // 입력되어 있는 메모들
+    currentMemo: null // 내가 클릭한 메모
 }
 
 const joinReducer = (state = initialState, action) => {
@@ -22,9 +23,18 @@ const joinReducer = (state = initialState, action) => {
             return {...state, loginStatus: action.payload}
         case "INSERT_DATE_NUMBER":
             return {...state, selectDate: action.payload} 
-        case "INSERT_MEMO_LIST":
+        case "INSERT_MEMO_LIST": // 메모들 전체 불러오기
 // console.log(`action.payload = ${JSON.stringify(action.payload)}`);
             return {...state, memoList: action.payload}
+        case "INSERT_MEMO": // 내가 클릭한 메모
+            const updateMemoList = state.memoList.map(memo =>
+                memo.id === action.payload.id ? action.payload : memo
+            )
+            return {
+                ...state,
+                memoList: updateMemoList,
+                currentMemo: action.payload
+            }
         default:
             return state
     }
