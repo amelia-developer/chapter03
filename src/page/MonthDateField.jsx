@@ -123,7 +123,7 @@ const MonthDateField = () => {
                   </tr>
               </thead>
               <tbody>
-                  <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate}></DayNumber>
+                  <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear}></DayNumber>
               </tbody>
           </table> 
       </div>

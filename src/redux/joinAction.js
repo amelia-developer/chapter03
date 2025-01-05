@@ -9,8 +9,9 @@ export const SET_PW_JOIN = "SET_PW_JOIN"
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_RESET_STATUS = "LOGIN_RESET_STATUS"
 export const INSERT_DATE_NUMBER = "INSERT_DATE_NUMBER"
-export const INSERT_MEMO_LIST = "INSERT_MEMO_LIST"
-export const INSERT_MEMO = "INSERT_MEMO"
+export const ALL_MEMO_LIST = "ALL_MEMO_LIST"
+export const CLICK_EACH_MEMO = "CLICK_EACH_MEMO"
+export const NEW_ADD_MEMO = "NEW_ADD_MEMO"
 
 // 액션생성자
 export const setIDjoin = (joinID) => ({
@@ -38,14 +39,19 @@ export const insertDateNumber = (selectDate) => ({
     payload: selectDate
 })
 
-export const insertMemoList = (memoList) => ({
-    type: INSERT_MEMO_LIST,
+export const allMemoList = (memoList) => ({
+    type: ALL_MEMO_LIST,
     payload: memoList
 })
 
-export const insertMemo = (memo) => ({
-    type: INSERT_MEMO,
-    payload: memo
+export const clickEachMemo = (clickMemo) => ({
+    type: CLICK_EACH_MEMO,
+    payload: clickMemo
+})
+
+export const newAddMemo = (memoList) => ({
+    type: NEW_ADD_MEMO,
+    payload: memoList
 })
 
 // 회원가입 액션
@@ -109,11 +115,10 @@ export const fetchClickDateNumber = (selectDate, memoContent) => {
     return dispatch => {
         axios.post(`http://localhost:3001/memoList`, {
             selectDate,
-            memoContent
+            memoContent,
         })
         .then(response => {
-            dispatch(insertDateNumber(response.data.selectDate))
-            dispatch(insertMemoList(response.data.memoContent))
+            dispatch(newAddMemo(response.data))
         })
         .catch(error => {
             console.error(error)
@@ -127,7 +132,7 @@ export const fetchAllMemoList = () => {
     return dispatch => {
         axios.get(`http://localhost:3001/memoList/`)
             .then(response => {
-                dispatch(insertMemoList(response.data))
+                dispatch(allMemoList(response.data))
             })
             .catch(error => {
                 console.error(error)
@@ -140,7 +145,7 @@ export const fetchMemoList = (memoData) => {
     return dispatch => {
         axios.get(`http://localhost:3001/memoList/${memoData}`)
             .then(response => {
-                dispatch(insertMemo(response.data))
+                dispatch(clickEachMemo(response.data))
             })
             .catch(error => {
                 console.error(error)
@@ -156,7 +161,7 @@ export const fetchModifyMemo = (selectDate) => {
             memoContent: memoContent
         })
         .then(response => {
-            dispatch(insertMemo(response.data))
+            dispatch(clickEachMemo(response.data))
         })
         .catch(error => {
             console.error(error)

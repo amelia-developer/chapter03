@@ -1,7 +1,8 @@
-import React, { memo, useEffect, useState } from 'react'
-import { fetchClickDateNumber, insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
+import React, { useEffect, useState } from 'react'
+import { insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { current } from '@reduxjs/toolkit'
+import Memo from './Memo'
 
 function DayNumber(props) {
     let dayFirstDay = props.dayOfFirstDay // '2024.11월은(=현재월) 금요일(5)부터' 시작 -> getDay()로 뽑아낸 값이 5임
@@ -11,6 +12,10 @@ function DayNumber(props) {
 
     let dayLastNum = props.currentOfDays
 
+    // 각 달력의 일자에 대해서 메모를 저장하고자 년도와 월을 객체와 시키려고 props로 전달받음
+    let currentYear = props.currentYear
+    let currentMonth = props.currentMonth
+
     let dayArr = []
     // 월의 1일이 시작되는 요일앞에 공백추가 -> 이전달 날짜 보여주기
     for (let i = prevLastDate - (dayFirstDay-1); i <= prevLastDate; i++) {
@@ -19,17 +24,20 @@ function DayNumber(props) {
         // console.log(`dayFirstDay-1 = ${dayFirstDay-1}`); // 4
         // console.log(`i = ${i}`);
         
-        dayArr.push(i);        
+        // dayArr.push(i); // 이건 그냥 숫자를(=일자date)푸시할때
+        dayArr.push({year: currentYear, month:currentMonth - 1, day: i})
     }
     
     for (let i = 1; i <= dayLastNum; i++) {
-        dayArr.push(i)
+        // dayArr.push(i) // 이건 그냥 숫자를(=일자date)푸시할때
+        dayArr.push({year: currentYear, month:currentMonth, day: i})
     }
 
     // 월의 마지막날짜가 끝나는 요일뒤에 공백추가 -> 다음달 날짜 보여주기
     for (let i = 1; i < 7 - dayOfLastDay ; i++) { // 일요일0부터 토요일6까지니까 조건은 i가 6보다 작을때
         // dayArr.push("")
-        dayArr.push(i)
+        // dayArr.push(i) // 이건 그냥 숫자를(=일자date)푸시할때
+        dayArr.push({year: currentYear, month: currentMonth + 1, day: i})
     }    
 
     let week7Arr = []
@@ -39,6 +47,7 @@ function DayNumber(props) {
         week7Arr.push(temp)        
     }
 
+// console.log(`dayArr = ${JSON.stringify(dayArr)}`);
     /**
      * 메모창열고 닫히는거에 따른 상태값 true/false정의
      * 1. 맨처음엔 closeStatus : true = 메모창 안보임
@@ -49,18 +58,33 @@ function DayNumber(props) {
     const [currentMemo, setCurrentMemo] = useState('')
     const [closeStatus, setCloseStatus] = useState(true)
     const [memoID, setMemoID] = useState(null)
+
     // 상태구독
     const selectDate = useSelector(state => state.join.selectDate)
     const memoList = useSelector(state => state.join.memoList)
 
     // 날짜에 대한 조회
-    const onHandleDateNumber = (date) => {
+    const onHandleDateNumber = (dateObj) => {
 // console.log(`ttt`);
         setCloseStatus(false)
-        dispatch(insertDateNumber(date))
-        dispatch(fetchAllMemoList(date))
+        dispatch(insertDateNumber(dateObj))
+        dispatch(fetchAllMemoList(dateObj))
 
-        const dataMatch = memoList.find(value => value.selectDate === date)
+        /// const dataMatch = memoList.find(value => value.selectDate === date)
+
+        const dataMatch = Object.values(memoList).find((value) => {
+console.log(`value = ${JSON.stringify(value)}`)
+        if (!value.selectDate) {
+            console.error("selectDate가 유효하지 않거나 누락됨:", value)
+            return false
+        }
+        return (
+            value.selectDate.year === dateObj.year &&
+            value.selectDate.month === dateObj.month &&
+            value.selectDate.day === dateObj.day
+            )
+        })
+
         if(dataMatch) {
             setMemoID(dataMatch.id)
             setCurrentMemo(dataMatch.memoContent)
@@ -69,35 +93,6 @@ function DayNumber(props) {
             setMemoID(null)
             setCurrentMemo('')
         }
-    }
-
-    // 날짜에 대한 메모저장
-    const onDateMemoSave = (date) => {   
-       dispatch(fetchClickDateNumber(date, currentMemo))
-    }
-
-    // 날짜에 대한 메모수정
-    const onDateMemoModify = (date, event) => {
-        const dataMatch = memoList.find(value => value.selectDate === date)
-        if(dataMatch) {
-            setMemoID(dataMatch.id)
-            setCurrentMemo(currentMemo)
-            dispatch(fetchModifyMemo({id: dataMatch.id, memoContent: currentMemo}))
-            
-            if(closeStatus === false) {
-                alert(`수정되었습니다`)
-            }
-        }
-        event.stopPropagation()
-        setCloseStatus(true)
-    }
-
-    // 날짜에 대한 메모닫기
-    const onDateMemoClose = (event) => {
-        event.stopPropagation() // 상위부모 'onHandleDateNumber' 이벤트핸들러로 버블링 되지 않도록 하기위해(이게 없으면, 닫기를 할때 onHandlerDateNumber에있는 ttt가 찍힘)
-        setCloseStatus(true)
-        dispatch(insertDateNumber(null)) // 상태 업데이트 후 비동기적으로 dispatch 실행
-// console.log(`닫기버튼 클릭시 closeStatus = ${closeStatus}`);      
     }
 
     useEffect(() => {
@@ -111,101 +106,76 @@ function DayNumber(props) {
             dispatch(fetchModifyMemo({id: memoID, memoContent: currentMemo}))
         }
     }, [memoID, currentMemo])
-
     return (
         <>
             {
                 week7Arr.map((numberDate, index) => 
-                    // console.log(`index = ${index}`); // 0, 1, 2, 3, 4 -> 몇번째주인지(0은 첫번째주 = tr)
-                    
+                    // console.log(`index = ${index}`); // 0, 1, 2, 3, 4 -> 몇번째주인지(0은 첫번째주 = tr)          
                     <tr key={index}>
-                        {
-                            
-                            numberDate.map((element, idx) => {
-                                if(index === 0 && element > 7) { // 첫번째주(=0)이면서 첫번째주의 수가 7보다(=일주일은 7일)보다 큰수가 있으면
-                                    return <td key={idx} className='prev' onClick={() => onHandleDateNumber(element)}>{element}
+                         {
+                             numberDate.map((element, idx) => {
+                                // 메모의 날짜가 이번달메모인지, 지난달메모인지 구분
+                                // const isPrevMonth = index === 0 && element > 7 // 첫번째주 이면서 날짜가 7보다 큰 경우(지난달)
+                                // const isNextMonth = index >= 4 && element < 7 // 마지막주 이면서 날짜가 7보다 작은 경우(다음달)
+                                // const isThisMonth = !isPrevMonth && !isNextMonth // 이번달
+                                const { year, month, day } = element
+                                const isPrevMonth = month < currentMonth
+                                const isNextMonth = month > currentMonth
+                                // if(isPrevMonth) { // 첫번째주(=0)이면서 첫번째주의 수가 7보다(=일주일은 7일)보다 큰수가 있으면
+                                    return <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : ""} onClick={() => onHandleDateNumber(element)}>{day}
                                             {
-                                                /**TODO:_해야함::리팩토링(컴포넌트도) */
-                                                selectDate === element && closeStatus === false ? 
-                                                <div className="box">
-                                                    <p className="text-memo"><textarea onChange={(e) => setCurrentMemo(e.target.value)} value={currentMemo}></textarea></p>
-                                                    <div className="btn-box">
-                                                        <button type="button" onClick={() => onDateMemoSave(element)}>저장</button>
-                                                        <button type="button" onClick={(event) => onDateMemoClose(event)}>취소</button>
-                                                        <button type="button" onClick={(event) => onDateMemoModify(element, event)}>수정</button>
-                                                    </div>
-                                                </div>
+                                                selectDate ?. year === year && selectDate ?. month === month && selectDate ?. day === day && closeStatus === false?
+                                                <Memo   currentMemo={currentMemo}
+                                                        memoList={memoList}
+                                                        setMemoID={setMemoID}
+                                                        setCurrentMemo={setCurrentMemo}
+                                                        closeStatus={closeStatus}
+                                                        setCloseStatus={setCloseStatus}
+                                                        element={element}>
+                                                </Memo>
                                                 : null
                                             }
                                             </td>
                                     
-                                }
-                                // if(index >= 4 && element < 7) { // 마지막주(=4이상=6주짜리Month)이면서 마지막주의 수가 7보다(=일주일은 7일)보다 작은수가 있으면                                    
-                                //     return <td key={idx} className='next' onClick={() => onDateMemo(element)}>{element}
-                                //             {
-                                //                 selectDate === element ? 
-                                //                 <p className="text-memo">
-                                //                     <textarea onChange={(e) => setCurrentMemo(e.target.value)} value={currentMemo}></textarea>
-                                //                     <div className="btn-box">
-                                //                         <button type="button" onClick={onDateMemo(element)}>저장</button>
-                                //                         <button type="button">취소</button>
-                                //                         <button type="button">수정</button>
-                                //                     </div>
-                                //                 </p>
-                                //                 : null
-                                //             }
-                                //             </td>
                                 // }
-                                // if(idx === 0 ){
-                                //     return <td key={idx} className='sunday' onClick={() => onDateMemo(element)}>{element}
-                                //             {
-                                //                 selectDate === element ? 
-                                //                 <p className="text-memo">
-                                //                     <textarea onChange={(e) => setCurrentMemo(e.target.value)} value={currentMemo}></textarea>
-                                //                     <div className="btn-box">
-                                //                         <button type="button" onClick={onDateMemo(element)}>저장</button>
-                                //                         <button type="button">취소</button>
-                                //                         <button type="button">수정</button>
-                                //                     </div>
-                                //                 </p>
-                                //                 : null
-                                //             }
-                                //             </td>
-                                // } else if(idx === 6) {
-                                //     return <td key={idx} className='saturday' onClick={() => onDateMemo(element)}>{element}
-                                //             {
-                                //                 selectDate === element ? 
-                                //                 <p className="text-memo">
-                                //                     <textarea onChange={(e) => setCurrentMemo(e.target.value)} value={currentMemo}></textarea>
-                                //                     <div className="btn-box">
-                                //                         <button type="button" onClick={onDateMemo(element)}>저장</button>
-                                //                         <button type="button">취소</button>
-                                //                         <button type="button">수정</button>
-                                //                     </div>
-                                //                 </p>
-                                //                 : null
-                                //             }
-                                //             </td>
-                                // } else {
-                                //     return <td key={idx} onClick={() => onDateMemo(element)}>{element}
-                                //             {
-                                //                 selectDate === element ? 
-                                //                 <p className="text-memo">
-                                //                     <textarea onChange={(e) => setCurrentMemo(e.target.value)} value={currentMemo}></textarea>
-                                //                     <div className="btn-box">
-                                //                         <button type="button" onClick={onDateMemo(element)}>저장</button>
-                                //                         <button type="button">취소</button>
-                                //                         <button type="button">수정</button>
-                                //                     </div>
-                                //                 </p>
-                                //                 : null
-                                //             }
-                                //             </td>
-                                // }
-                                // 다음달에 대한 회색글자처리
-                            })
-                        }
-                    </tr>
+                    //             if(isNextMonth) { // 마지막주(=4이상=6주짜리Month)이면서 마지막주의 수가 7보다(=일주일은 7일)보다 작은수가 있으면                                    
+                    //                 return <td key={idx} className='next' onClick={() => onHandleDateNumber(element)}>{element}
+                    //                         {
+                    //                             selectDate === element && closeStatus === false ? 
+                    //                             <Memo currentMemo={currentMemo} memoList={memoList} setMemoID={setMemoID} setCurrentMemo={setCurrentMemo} closeStatus={closeStatus} setCloseStatus={setCloseStatus} element={element}></Memo>
+                    //                             : null
+                    //                         }
+                    //                         </td>
+                    //             }
+                    //             if(idx === 0 ){
+                    //                 return <td key={idx} className='sunday' onClick={() => onHandleDateNumber(element)}>{element}
+                    //                         {
+                    //                             selectDate === element && closeStatus === false ? 
+                    //                             <Memo currentMemo={currentMemo} memoList={memoList} setMemoID={setMemoID} setCurrentMemo={setCurrentMemo} closeStatus={closeStatus} setCloseStatus={setCloseStatus} element={element}></Memo>
+                    //                             : null
+                    //                         }
+                    //                         </td>
+                    //             } else if(idx === 6) {
+                    //                 return <td key={idx} className='saturday' onClick={() => onHandleDateNumber(element)}>{element}
+                    //                         {
+                    //                             selectDate === element && closeStatus === false ? 
+                    //                             <Memo currentMemo={currentMemo} memoList={memoList} setMemoID={setMemoID} setCurrentMemo={setCurrentMemo} closeStatus={closeStatus} setCloseStatus={setCloseStatus} element={element}></Memo>
+                    //                             : null
+                    //                         }
+                    //                         </td>
+                    //             } else {
+                    //                 return <td key={idx} onClick={() => onHandleDateNumber(element)}>{element}
+                    //                         {
+                    //                             selectDate === element && closeStatus === false ? 
+                    //                             <Memo currentMemo={currentMemo} memoList={memoList} setMemoID={setMemoID} setCurrentMemo={setCurrentMemo} closeStatus={closeStatus} setCloseStatus={setCloseStatus} element={element}></Memo>
+                    //                             : null
+                    //                         }
+                    //                         </td>
+                    //             }
+                    //             // 다음달에 대한 회색글자처리
+                             })
+                         }
+                     </tr>
                 )
             }
         </>
