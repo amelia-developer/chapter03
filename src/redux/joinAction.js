@@ -112,12 +112,22 @@ export const fetchSetLogin = (loginInfo) => {
 
 // 클릭한날짜에 대한 메모post액션(입력)
 export const fetchClickDateNumber = (selectDate, memoContent) => {
+    // month가 1월에서 minus하면 0월로 들어가는거 방지
+    const adjustMonthCompare = {
+        ...selectDate,
+        month: selectDate.month === 0 ? 12 : selectDate.month && selectDate.month === 13 ? 1 : selectDate.month,
+        year: selectDate.month === 13 ? selectDate.year + 1 : selectDate.year && selectDate.month === 0 ? selectDate.year - 1 : selectDate.year
+        // TODO:2024년, 2025년, 2026년 해당년도에맞도록
+    }
+// console.log(`selectDate.month = ${JSON.stringify(selectDate.month)}`)
+
     return dispatch => {
         axios.post(`http://localhost:3001/memoList`, {
-            selectDate,
+            selectDate: adjustMonthCompare,
             memoContent,
         })
         .then(response => {
+// console.log(`response.data = ${JSON.stringify(response.data)}`);
             dispatch(newAddMemo(response.data))
         })
         .catch(error => {

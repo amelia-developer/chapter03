@@ -18,6 +18,8 @@ function DayNumber(props) {
 
     let dayArr = []
     // 월의 1일이 시작되는 요일앞에 공백추가 -> 이전달 날짜 보여주기
+// console.log(`dayFirstDay = ${JSON.stringify(dayFirstDay)}`);// 2025년도 1월은 수요일부터 시작하므로(일욜:0, 월욜:1, 화욜:2, 수욜:3)
+                                                            // 달력의 주가 1부터 7까지 구성되어있는데, dayFirstDay는 0부터 시작하니까 -1을 해준거임 
     for (let i = prevLastDate - (dayFirstDay-1); i <= prevLastDate; i++) {
         // console.log(`prevLastDate = ${prevLastDate}`); // 31
         // console.log(`dayFirstDay = ${dayFirstDay}`); // 5
@@ -27,7 +29,7 @@ function DayNumber(props) {
         // dayArr.push(i); // 이건 그냥 숫자를(=일자date)푸시할때
         dayArr.push({year: currentYear, month:currentMonth - 1, day: i})
     }
-    
+
     for (let i = 1; i <= dayLastNum; i++) {
         // dayArr.push(i) // 이건 그냥 숫자를(=일자date)푸시할때
         dayArr.push({year: currentYear, month:currentMonth, day: i})
@@ -71,29 +73,29 @@ function DayNumber(props) {
         dispatch(fetchAllMemoList(dateObj))
 
         /// const dataMatch = memoList.find(value => value.selectDate === date)
-
         const dataMatch = Object.values(memoList).find((value) => {
-console.log(`value = ${JSON.stringify(value)}`)
-        if (!value.selectDate) {
-            console.error("selectDate가 유효하지 않거나 누락됨:", value)
-            return false
-        }
-        return (
-            value.selectDate.year === dateObj.year &&
-            value.selectDate.month === dateObj.month &&
-            value.selectDate.day === dateObj.day
-            )
-        })
+// console.log(`value = ${JSON.stringify(value)}`)
 
-        if(dataMatch) {
-            setMemoID(dataMatch.id)
-            setCurrentMemo(dataMatch.memoContent)
-            dispatch(fetchMemoList(dataMatch.id))
-        } else {
-            setMemoID(null)
-            setCurrentMemo('')
+            if (!value.selectDate) {
+                console.error("selectDate가 유효하지 않거나 누락됨:", value)
+                return false
+            }
+            return (
+                value.selectDate.year === dateObj.year &&
+                value.selectDate.month === dateObj.month &&
+                value.selectDate.day === dateObj.day
+                )
+            })
+
+            if(dataMatch) {
+                setMemoID(dataMatch.id)
+                setCurrentMemo(dataMatch.memoContent)
+                dispatch(fetchMemoList(dataMatch.id))
+            } else {
+                setMemoID(null)
+                setCurrentMemo('')
+            }
         }
-    }
 
     useEffect(() => {
         // 초기 상태 설정
