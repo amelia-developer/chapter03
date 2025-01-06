@@ -123,6 +123,12 @@
                     .btn-box {
                         position: absolute;
                         bottom: 10px;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        button {
+                            width: 50%;
+                        }
                     } // btn-box종료
                 } // box종료
                 &.saturday {

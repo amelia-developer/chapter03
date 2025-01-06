@@ -42,24 +42,6 @@
       "memoContent": "2025년 1월 1일을 클릭함\n\n새해복많이받으세요\n\n해피뉴이어\n\n2025년에는 모두가 무탈하기를"
     },
     {
-      "id": "81f3",
-      "selectDate": {
-        "year": 2024,
-        "month": 12,
-        "day": 31
-      },
-      "memoContent": "2024년도 수고하셨습니다"
-    },
-    {
-      "id": "de96",
-      "selectDate": {
-        "year": 2024,
-        "month": 12,
-        "day": 30
-      },
-      "memoContent": "2024년 이제 내일하루 남았습니다"
-    },
-    {
       "id": "aa22",
       "selectDate": {
         "year": 2025,
@@ -67,6 +49,15 @@
         "day": 14
       },
       "memoContent": "헬스 재등록하는날\n\n+ 필라테스 상담신청하기"
+    },
+    {
+      "id": "2ef7",
+      "selectDate": {
+        "year": 2024,
+        "month": 12,
+        "day": 31
+      },
+      "memoContent": "aaaaa+ccccccc+ddddddd"
     }
   ]
 }

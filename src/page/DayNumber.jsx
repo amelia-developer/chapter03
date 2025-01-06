@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
+import { insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo, fetchDeleteMemo } from '../redux/joinAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { current } from '@reduxjs/toolkit'
 import Memo from './Memo'

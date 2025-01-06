@@ -6,7 +6,8 @@ const initialState = {
     loginStatus: false,
     selectDate: null, // 내가 클릭한 날짜
     memoList: [], // 입력되어 있는 메모들
-    clickMemo: null // 내가 클릭한 메모
+    clickMemo: null, // 내가 클릭한 메모
+    deleteMemo: null // 내가 삭제하려는 메모
 }
 
 const joinReducer = (state = initialState, action) => {
@@ -26,7 +27,7 @@ const joinReducer = (state = initialState, action) => {
         case "ALL_MEMO_LIST": // 메모들 전체 불러오기
 // console.log(`action.payload = ${JSON.stringify(action.payload)}`);
             return {...state, memoList: action.payload}
-        case "CLICK_EACH_MEMO": // 내가 클릭한 메모
+        case "CLICK_EACH_MEMO": // 내가 클릭한 메모 보기 & 수정(=patch)하기
             const updateMemoList = state.memoList.map(memo =>
                 memo.id === action.payload.id ? action.payload : memo
             )
@@ -37,6 +38,15 @@ const joinReducer = (state = initialState, action) => {
             }
         case "NEW_ADD_MEMO": // 새로운 메모 추가
             return {...state, memoList: [...state.memoList, action.payload]}
+        case "DELETE_EACH_MEMO": // 내가 클릭한 메모 삭제하기
+            const updateMemoList2 = state.memoList.map(memo => 
+                memo.id === action.payload.id ? action.payload : memo
+            )
+            return {
+                ...state, 
+                memoList: updateMemoList2,
+                deleteMemo: action.payload
+            }
         default:
             return state
     }

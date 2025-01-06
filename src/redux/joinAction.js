@@ -12,6 +12,7 @@ export const INSERT_DATE_NUMBER = "INSERT_DATE_NUMBER"
 export const ALL_MEMO_LIST = "ALL_MEMO_LIST"
 export const CLICK_EACH_MEMO = "CLICK_EACH_MEMO"
 export const NEW_ADD_MEMO = "NEW_ADD_MEMO"
+export const DELETE_EACH_MEMO = "DELETE_EACH_MEMO"
 
 // 액션생성자
 export const setIDjoin = (joinID) => ({
@@ -52,6 +53,11 @@ export const clickEachMemo = (clickMemo) => ({
 export const newAddMemo = (memoList) => ({
     type: NEW_ADD_MEMO,
     payload: memoList
+})
+
+export const deleteMemo = (deleteMemo) => ({
+    type: DELETE_EACH_MEMO,
+    payload: deleteMemo
 })
 
 // 회원가입 액션
@@ -158,7 +164,7 @@ export const fetchMemoList = (memoData) => {
     }
 }
 
-// 클릭한날짜에 대한 메모fetch액션(수정)
+// 클릭한날짜에 대한 메모patch액션(수정)
 export const fetchModifyMemo = (selectDate) => {
     return dispatch => {
         const memoContent = selectDate.memoContent
@@ -167,6 +173,23 @@ export const fetchModifyMemo = (selectDate) => {
         })
         .then(response => {
             dispatch(clickEachMemo(response.data))
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
+}
+
+// 클릭한날짜에 대한 메모delete액션(삭제)
+export const fetchDeleteMemo = (selectDate) => {
+console.log(`selectDate = ${JSON.stringify(selectDate)}`);
+    return dispatch => {
+        const memoContent = selectDate.memoContent
+        axios.delete(`http://localhost:3001/memoList/${selectDate.id}`, {
+            memoContent: memoContent
+        })
+        .then(response => {
+            dispatch(deleteMemo(response.data))
         })
         .catch(error => {
             console.error(error)

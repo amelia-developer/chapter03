@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
-import { fetchClickDateNumber, fetchModifyMemo, insertDateNumber } from '../redux/joinAction'
+import { fetchClickDateNumber, fetchModifyMemo, insertDateNumber, fetchDeleteMemo, fetchAllMemoList } from '../redux/joinAction'
 
 const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, setCloseStatus, element}) => {
     const dispatch = useDispatch()
@@ -17,7 +17,12 @@ const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, se
 
     // 날짜에 대한 메모수정
     const onDateMemoModify = (date, event) => {
-        const dataMatch = memoList.find(value => value.selectDate === date)
+        // const dataMatch = memoList.find(value => value.selectDate === date)
+        const dataMatch = memoList.find(value => 
+                            value.selectDate.year === date.year &&
+                            value.selectDate.month === date.month &&
+                            value.selectDate.day === date.day
+                        )
         if(dataMatch) {
             setMemoID(dataMatch.id)
             setCurrentMemo(currentMemo)
@@ -37,6 +42,26 @@ const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, se
         dispatch(insertDateNumber(null)) // 상태 업데이트 후 비동기적으로 dispatch 실행
 // console.log(`닫기버튼 클릭시 closeStatus = ${closeStatus}`);      
     }
+
+    // 날짜에 대한 메모삭제
+    const onDateMemoDelete = (date, event) => {
+        const dataMatch = memoList.find(value => 
+                                    value.selectDate.year === date.year &&
+                                    value.selectDate.month === date.month &&
+                                    value.selectDate.day === date.day
+                        )
+        if(dataMatch) {
+            setMemoID(dataMatch.id)
+            setCurrentMemo(currentMemo)
+            dispatch(fetchDeleteMemo({id: dataMatch.id, memoContent: currentMemo}))
+            dispatch(fetchAllMemoList())
+        }
+        if(closeStatus === false) {
+            alert(`삭제되었습니다`)
+        }
+        event.stopPropagation()
+        setCloseStatus(true)
+    }
   return (
     <>
         <div className="box">
@@ -45,6 +70,7 @@ const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, se
                 <button type="button" onClick={(event) => onDateMemoSave(element, event)}>저장</button>
                 <button type="button" onClick={(event) => onDateMemoClose(event)}>취소</button>
                 <button type="button" onClick={(event) => onDateMemoModify(element, event)}>수정</button>
+                <button type="button" onClick={(event) => onDateMemoDelete(element, event)}>삭제</button>
             </div>
         </div>
     </>
