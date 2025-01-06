@@ -8,6 +8,9 @@ const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, se
     // 날짜에 대한 메모저장
     const onDateMemoSave = (date, event) => {
         dispatch(fetchClickDateNumber(date, currentMemo))
+        if(closeStatus === false) {
+            alert(`저장되었습니다`)
+        }
         event.stopPropagation()
         setCloseStatus(true)
     }
@@ -19,10 +22,9 @@ const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, se
             setMemoID(dataMatch.id)
             setCurrentMemo(currentMemo)
             dispatch(fetchModifyMemo({id: dataMatch.id, memoContent: currentMemo}))
-            
-            if(closeStatus === false) {
-                alert(`수정되었습니다`)
-            }
+        }
+        if(closeStatus === false) {
+            alert(`수정되었습니다`)
         }
         event.stopPropagation()
         setCloseStatus(true)

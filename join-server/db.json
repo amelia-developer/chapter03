@@ -15,76 +15,58 @@
   ],
   "memoList": [
     {
-      "id": "0ed8",
+      "id": "e864",
       "selectDate": {
         "year": 2025,
         "month": 12,
-        "day": 28
+        "day": 31
       },
-      "memoContent": "2025년 12월 28일을 클릭"
+      "memoContent": "2025년 12월 31일을 클릭함"
     },
     {
-      "id": "b757",
+      "id": "4a8c",
       "selectDate": {
         "year": 2026,
         "month": 1,
-        "day": 31
+        "day": 1
       },
-      "memoContent": "2026년 1월 31일을 클릭함"
+      "memoContent": "2026년 1월 1일을 클릭함"
     },
     {
-      "id": "28eb",
-      "selectDate": {
-        "year": 2025,
-        "month": 12,
-        "day": 30
-      },
-      "memoContent": "2025년 12월 30일을 클릭함"
-    },
-    {
-      "id": "cf4e",
-      "selectDate": {
-        "year": 2025,
-        "month": 11,
-        "day": 30
-      },
-      "memoContent": "2025년 11월 30일을 클릭함"
-    },
-    {
-      "id": "bb32",
-      "selectDate": {
-        "year": 2025,
-        "month": 12,
-        "day": 3
-      },
-      "memoContent": "2025년 12월 3일을 클릭함"
-    },
-    {
-      "id": "20e7",
-      "selectDate": {
-        "year": 2024,
-        "month": 12,
-        "day": 29
-      },
-      "memoContent": "2024년 12월 29일을 클릭함"
-    },
-    {
-      "id": "aa7e",
+      "id": "d8f2",
       "selectDate": {
         "year": 2025,
         "month": 1,
-        "day": 31
-      },
-      "memoContent": "2025년 1월 31일을 클릭함"
-    },
-    {
-      "id": "c63b",
-      "selectDate": {
-        "year": 2025,
-        "month": 2,
         "day": 1
       },
-      "memoContent": "2025년 2월 1일을 클릭함"
+      "memoContent": "2025년 1월 1일을 클릭함\n\n새해복많이받으세요\n\n해피뉴이어\n\n2025년에는 모두가 무탈하기를"
+    },
+    {
+      "id": "81f3",
+      "selectDate": {
+        "year": 2024,
+        "month": 12,
+        "day": 31
+      },
+      "memoContent": "2024년도 수고하셨습니다"
+    },
+    {
+      "id": "de96",
+      "selectDate": {
+        "year": 2024,
+        "month": 12,
+        "day": 30
+      },
+      "memoContent": "2024년 이제 내일하루 남았습니다"
+    },
+    {
+      "id": "aa22",
+      "selectDate": {
+        "year": 2025,
+        "month": 1,
+        "day": 14
+      },
+      "memoContent": "헬스 재등록하는날\n\n+ 필라테스 상담신청하기"
     }
   ]
 }

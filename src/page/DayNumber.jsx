@@ -25,11 +25,15 @@ function DayNumber(props) {
         // console.log(`dayFirstDay = ${dayFirstDay}`); // 5
         // console.log(`dayFirstDay-1 = ${dayFirstDay-1}`); // 4
         // console.log(`i = ${i}`);
-        
         // dayArr.push(i); // 이건 그냥 숫자를(=일자date)푸시할때
-        dayArr.push({year: currentYear, month:currentMonth - 1, day: i})
-    }
 
+        // (중요):이전달의 month/year 계산
+        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+        
+        dayArr.push({year: prevYear, month:prevMonth, day: i})
+    }
+    
     for (let i = 1; i <= dayLastNum; i++) {
         // dayArr.push(i) // 이건 그냥 숫자를(=일자date)푸시할때
         dayArr.push({year: currentYear, month:currentMonth, day: i})
@@ -39,7 +43,12 @@ function DayNumber(props) {
     for (let i = 1; i < 7 - dayOfLastDay ; i++) { // 일요일0부터 토요일6까지니까 조건은 i가 6보다 작을때
         // dayArr.push("")
         // dayArr.push(i) // 이건 그냥 숫자를(=일자date)푸시할때
-        dayArr.push({year: currentYear, month: currentMonth + 1, day: i})
+
+        // (중요): 다음 달의 month/year 계산
+        const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+        const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+        
+        dayArr.push({year: nextYear, month: nextMonth, day: i})
     }    
 
     let week7Arr = []
@@ -72,10 +81,10 @@ function DayNumber(props) {
         dispatch(insertDateNumber(dateObj))
         dispatch(fetchAllMemoList(dateObj))
 
+// const adjustDateObj = {...dateObj} // 날짜를 객체화하고나서 확인하려고 일부러 이렇게 만들어서 로그찍어봄
         /// const dataMatch = memoList.find(value => value.selectDate === date)
         const dataMatch = Object.values(memoList).find((value) => {
 // console.log(`value = ${JSON.stringify(value)}`)
-
             if (!value.selectDate) {
                 console.error("selectDate가 유효하지 않거나 누락됨:", value)
                 return false
@@ -84,18 +93,18 @@ function DayNumber(props) {
                 value.selectDate.year === dateObj.year &&
                 value.selectDate.month === dateObj.month &&
                 value.selectDate.day === dateObj.day
-                )
-            })
+            )
+        })
 
-            if(dataMatch) {
-                setMemoID(dataMatch.id)
-                setCurrentMemo(dataMatch.memoContent)
-                dispatch(fetchMemoList(dataMatch.id))
-            } else {
-                setMemoID(null)
-                setCurrentMemo('')
-            }
+        if(dataMatch) {
+            setMemoID(dataMatch.id)
+            setCurrentMemo(dataMatch.memoContent)
+            dispatch(fetchMemoList(dataMatch.id))
+        } else {
+            setMemoID(null)
+            setCurrentMemo('')
         }
+    }
 
     useEffect(() => {
         // 초기 상태 설정
@@ -121,8 +130,8 @@ function DayNumber(props) {
                                 // const isNextMonth = index >= 4 && element < 7 // 마지막주 이면서 날짜가 7보다 작은 경우(다음달)
                                 // const isThisMonth = !isPrevMonth && !isNextMonth // 이번달
                                 const { year, month, day } = element
-                                const isPrevMonth = month < currentMonth
-                                const isNextMonth = month > currentMonth
+                                const isPrevMonth = currentMonth > month
+                                const isNextMonth = currentMonth < month
                                 // if(isPrevMonth) { // 첫번째주(=0)이면서 첫번째주의 수가 7보다(=일주일은 7일)보다 큰수가 있으면
                                     return <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : ""} onClick={() => onHandleDateNumber(element)}>{day}
                                             {
