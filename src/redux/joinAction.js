@@ -2,6 +2,7 @@ import axios from "axios"
 import {v4 as uuid4} from 'uuid'
 import bcrypt from 'bcryptjs'
 import { memo } from "react"
+import { useNavigate } from "react-router-dom"
 
 // 액션타입정의
 export const SET_ID_JOIN = "SET_ID_JOIN"
@@ -86,33 +87,48 @@ export const fetchSetJoin = (joinInfo) => {
 // 로그인 액션
 export const fetchSetLogin = (loginInfo) => {
     return dispatch => {
-        const {joinID, joinPW} = loginInfo
-
-        // id조회
-        axios.get(`http://localhost:3001/join`)
-            .then(response => {
-                const user = response.data.find(u => u.joinID === joinID)
-
-                if(!user) {
-                    alert(`id가 존재하지 않습니다`)    
-                } else {
-                    // pw해시 비교
-                    bcrypt.compare(joinPW, user.joinPW, (err, isMatch) => {
-                        if(err) {
-                            console.error(`비밀번호 비교 중 에러 발생`)
-                            return
-                        }
-                        
-                        if(isMatch) {
-                            console.log(`로그인 성공`)
-                            dispatch(loginStatus(true))
-                        } else {
-                            console.log(`로그인 실패`)
-                            dispatch(loginStatus(false))
-                        }
-                    })
-                }
-            })
+        // return new Promise((resolve, reject) => { ... }) 해준이유는 비동기작업의 결과 명시적으로 처리할라고
+        // bcrypt.compare가 콜백을 사용해서 결과를 반환하는 비동기함수임
+        return new Promise((resolve, reject) => { // 이렇게하면 promise를 반환하겠다 라는거임
+            const {joinID, joinPW} = loginInfo
+            
+            // id조회
+            axios.get(`http://localhost:3001/join`)
+                .then(response => {
+// console.log(`response.data = ${JSON.stringify(response.data)}`);               
+                    const user = response.data.find(u => u.joinID === joinID)
+// console.log(`user = ${JSON.stringify(user)}`);
+                    if(!user) {
+                        alert(`id가 존재하지 않습니다`) 
+                        resolve(false)   
+                    } else {
+                        // pw해시 비교
+                        bcrypt.compare(joinPW, user.joinPW, (err, isMatch) => {
+// console.log(`isMatch = ${JSON.stringify(isMatch)}`);
+                            if(err) {
+                                console.error(`비밀번호 비교 중 에러 발생`)
+                                reject(err) // 에러반환
+                            }
+                            
+                            if(isMatch) {
+                                console.log(`로그인 성공`)
+                                dispatch(loginStatus(true))
+                                resolve(true) // 로그인성공
+                            } else {
+// console.log(`isMatch = ${JSON.stringify(isMatch)}`);
+                                console.log(`로그인 실패`)
+                                dispatch(loginStatus(false))
+                                resolve(false) // 로그인실패
+                            }
+                        })                    
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                    return false
+                })
+        })
+            
     }
 }
 

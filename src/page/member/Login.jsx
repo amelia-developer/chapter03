@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { fetchSetLogin, resetLoginStatus } from '../../redux/joinAction'
+import { fetchSetLogin } from '../../redux/joinAction'
 import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
@@ -18,8 +18,17 @@ const Login = () => {
             joinPW: joinRef.current[1].value
         }
         dispatch(fetchSetLogin(loginInfo))
-        dispatch(resetLoginStatus(false))
-        navigate(`/date`)
+            .then((isloginSuccessful) => { // isloginSuccessful이 변수에는 fetchSetLogin을 디스패치한(=promise결과를) 내용을 담는다
+                if(isloginSuccessful) {
+                    navigate(`/date`)
+console.log(`로그인성공했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
+                } else {
+                    alert(`id 또는 pw를 확인해주세요`)
+// console.log(`loginInfo = ${JSON.stringify(loginInfo)}`);
+console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
+                }
+            })
+        
     }
 
     const onJoinStart = () => {
