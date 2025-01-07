@@ -49,8 +49,8 @@ console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(islog
         <div className="join-box">
             <h2>로그인</h2>
             <form onSubmit={onLoginStart}>
-                <label><input type="text" placeholder="아이디를 입력하세요" ref={(el) => joinRef.current[0] = el} defaultValue=""/></label>
-                <label>
+                <label className="lbl_join"><input type="text" placeholder="아이디를 입력하세요" ref={(el) => joinRef.current[0] = el} defaultValue=""/></label>
+                <label className="lbl_join">
                     <input type={inputType} placeholder="비밀번호를 입력하세요" ref={(el) => joinRef.current[1] = el} defaultValue="" onClick={onPasswordCheck}/>
                     <span className="material-icons toggleVisible">{visibilityText}</span>
                 </label>

@@ -31,9 +31,11 @@ export const loginStatus = (loginStatus) => ({
     payload: loginStatus
 })
 
-export const resetLoginStatus = () => ({ // 파라미터없는 액션생성자: 액션의타입만을 이용해 상태업데이트 = 고정된 값을 설정할때
+export const resetLoginStatus = (payload) => ({ // 파라미터없는 액션생성자: 액션의타입만을 이용해 상태업데이트 = 고정된 값을 설정할때
+                                                // payload 자체를 파라미터로 넣는경우: true/false 타입에 따른 상태를 나타내야할 때
     type: LOGIN_RESET_STATUS,
-    payload: false
+    // payload: false
+    payload
 })
 
 export const insertDateNumber = (selectDate) => ({
@@ -77,10 +79,28 @@ export const fetchSetJoin = (joinInfo) => {
         .then(response => {
             dispatch(setIDjoin(response.data.joinID))
             dispatch(setPWjoin(response.data.joinPW))
+            dispatch(resetLoginStatus(true))
         })
         .catch(error => {
             console.error(error)
         })
+    }
+}
+
+// id중복체크 액션
+export const fetchMultipleID = (multipleID) => {
+    return () => {    
+        axios.get(`http://localhost:3001/join`)
+            .then(response => {
+                const multiUser = response.data.find(newUser => newUser.joinID === multipleID)
+                if(multiUser) {
+                    console.log(`중복된id 있음`)
+                    alert(`사용불가능한 id입니다. \n다른id를 사용해주세요.`)
+                } else {
+                    console.log(`중복된id 없음`)
+                    alert(`사용가능한 id입니다`)
+                }
+            })
     }
 }
 
