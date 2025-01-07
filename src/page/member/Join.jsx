@@ -7,7 +7,7 @@ const Join = () => {
     const dispatch = useDispatch()
     const joinRef = useRef([])
     const navigate = useNavigate()
-    const [visibilityText, setVisibilityText] = useState("visibility")
+    const [visibilityText, setVisibilityText] = useState("visibility_off")
     const [inputType, setInputType] = useState("password")
 
     // 상태구독

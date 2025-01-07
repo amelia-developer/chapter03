@@ -79,7 +79,7 @@ export const fetchSetJoin = (joinInfo) => {
         .then(response => {
             dispatch(setIDjoin(response.data.joinID))
             dispatch(setPWjoin(response.data.joinPW))
-            dispatch(resetLoginStatus(true))
+            dispatch(resetLoginStatus(true)) // 회원가입하면 로그인된거잖아? 그럼 /date화면에서 '로그아웃'버튼 보여주기
         })
         .catch(error => {
             console.error(error)

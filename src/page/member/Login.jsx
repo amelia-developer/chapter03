@@ -8,7 +8,7 @@ const Login = () => {
     const joinRef = useRef([])
     const navigate = useNavigate()
 
-    const [visibilityText, setVisibilityText] = useState("visibility")
+    const [visibilityText, setVisibilityText] = useState("visibility_off")
     const [inputType, setInputType] = useState("password")
 
     const onLoginStart = (e) => {
