@@ -4,6 +4,7 @@ import { resetLoginStatus } from '../redux/joinAction'
 import DayWeek from './DayWeek'
 import DayNumber from './DayNumber';
 import { useNavigate } from 'react-router-dom';
+import ColletMonthMemo from './ColletMonthMemo';
 
 const MonthDateField = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
@@ -106,26 +107,29 @@ const MonthDateField = () => {
       {
           loginStatus ? <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button> : null
       }
-      <div className='month-box'>
-          <span className='number-year'>{currentYear}</span>
-          <span className='number-month'>{currentMonth}</span>
-          <span className='text-unit'>월</span>
-          <div className='arrow-box'>
-              <button className='btn-prev' onClick={onPrevMonth}>&lt;</button>
-              <button className='btn-next' onClick={onNextMonth}>&gt;</button>
+      <div className="month-box">
+          <span className="number-year">{currentYear}</span>
+          <span className="number-month">{currentMonth}</span>
+          <span className="text-unit">월</span>
+          <div className="arrow-box">
+              <button className="btn-prev" onClick={onPrevMonth}>&lt;</button>
+              <button className="btn-next" onClick={onNextMonth}>&gt;</button>
           </div>
       </div>
-      <div className='date-box'>
-          <table>
-              <thead>
-                  <tr>
-                      <DayWeek weeks={weeks}></DayWeek>
-                  </tr>
-              </thead>
-              <tbody>
-                  <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear}></DayNumber>
-              </tbody>
-          </table> 
+      <div className="inner-box">
+        <div className="date-box">
+            <table>
+                <thead>
+                    <tr>
+                        <DayWeek weeks={weeks}></DayWeek>
+                    </tr>
+                </thead>
+                <tbody>
+                    <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear}></DayNumber>
+                </tbody>
+            </table> 
+        </div>
+        <ColletMonthMemo></ColletMonthMemo>
       </div>
       <ul className="text-comment">
           <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>

@@ -63,10 +63,52 @@
     } // arrow-box종료
 } // month-box종료
 
+.inner-box {
+    display: flex;
+    margin-top: 5vw;
+    gap: 2vw;
+    .date-box {
+        width: 70%;
+    }
+    .collect-memo-box {
+        width: 30%;
+        text-align: left;
+        border: 1px dotted #000;
+        .title {
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        } // title종료
+        ul {
+            margin: 0;
+            padding: 0;
+            li {
+                padding: 0;
+                font-size: 12px;
+                line-height: 1.2;
+                list-style: none;
+                margin-bottom: 10px;
+                .text-date-number {
+                    font-weight: bold;
+                    color: #53e;
+                    vertical-align: text-top;
+                } // text-date-number종료
+                .text {
+                    display: inline-block;
+                    margin-left: 10px;
+                    max-width: 24vw;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            } // li종료
+        } // ul종료
+    }
+} // inner-box종료
+
 .date-box {
     display: flex;
     justify-content: center;
-    margin-top: 5vw;
     table {
         width: 100%;
         table-layout: fixed;
@@ -118,6 +160,7 @@
                             height: inherit;
                             resize: none;
                             height: 190px;
+                            overflow-y: auto;
                         }    
                     } // text-memo종료
                     .btn-box {
