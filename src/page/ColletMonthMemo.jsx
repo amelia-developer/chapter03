@@ -1,18 +1,27 @@
+import { current } from '@reduxjs/toolkit'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-const ColletMonthMemo = () => {
+const ColletMonthMemo = ({currentMonth, currentYear}) => {
     const memoBGlist = ["#FFB3B3", "#FFD9B3", "#FFFFB3", "#B3FFB3", "#B3D9FF", "#B3B3FF", "#D9B3FF"]
     
-
+    // 상태구독
     const memoList = useSelector(state => state.join.memoList)
-console.log(`memoList = ${JSON.stringify(memoList)}`);
+
+    // choiceYear에서 ?. selectDate.year 이거는 memoList.find하면 객체형태잖아. 거기서 객체가 있으면 selectDate.year을 갖고올거임
+    // const choiceYear = memoList.find(result => result.selectDate.year === currentYear)?. selectDate.year
+    // const choiceMonth = memoList.find(result => result.selectDate.month === currentMonth)?. selectDate.month
+
+    const resultFilterMemo = memoList.filter(value => 
+        value.selectDate.year === currentYear &&
+        value.selectDate.month === currentMonth
+    )
     return (
         <div className="collect-memo-box">
-            <span className="title">2025년 1월에 기재된 메모 리스트</span>
+            <span className="title">{currentYear}년 {currentMonth}월에 기재된 메모 리스트</span>
             <ul>
                 {
-                    memoList.map((value, index) => {
+                    resultFilterMemo.map((value, index) => {
                         // bgRandomIndex가 map밖에서 정의: 랜덤으로 단 한번 지정된 컬러가 li모두에게 입혀짐
                         // bgRandomIndex가 map안에서 정의: value마다(=li마다) 랜덤으로 컬러가 지정됨
                         const bgRandomIndex = memoBGlist[Math.floor(Math.random() * memoBGlist.length)]

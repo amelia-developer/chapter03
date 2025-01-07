@@ -129,7 +129,7 @@ const MonthDateField = () => {
                 </tbody>
             </table> 
         </div>
-        <ColletMonthMemo></ColletMonthMemo>
+        <ColletMonthMemo currentMonth={currentMonth} currentYear={currentYear}></ColletMonthMemo>
       </div>
       <ul className="text-comment">
           <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>
