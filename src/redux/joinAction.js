@@ -1,8 +1,6 @@
 import axios from "axios"
 import {v4 as uuid4} from 'uuid'
 import bcrypt from 'bcryptjs'
-import { memo } from "react"
-import { useNavigate } from "react-router-dom"
 
 // 액션타입정의
 export const SET_ID_JOIN = "SET_ID_JOIN"
@@ -26,9 +24,9 @@ export const setPWjoin = (joinPW) => ({
     payload: joinPW
 })
 
-export const loginStatus = (loginStatus) => ({
+export const loginStatus = (loginStatus, currentID) => ({
     type: LOGIN_SUCCESS,
-    payload: loginStatus
+    payload: {loginStatus, currentID}
 })
 
 export const resetLoginStatus = (payload) => ({ // 파라미터없는 액션생성자: 액션의타입만을 이용해 상태업데이트 = 고정된 값을 설정할때
@@ -117,7 +115,7 @@ export const fetchSetLogin = (loginInfo) => {
                 .then(response => {
 // console.log(`response.data = ${JSON.stringify(response.data)}`);               
                     const user = response.data.find(u => u.joinID === joinID)
-// console.log(`user = ${JSON.stringify(user)}`);
+console.log(`user = ${JSON.stringify(user)}`);
                     if(!user) {
                         alert(`id가 존재하지 않습니다`) 
                         resolve(false)   
@@ -132,12 +130,12 @@ export const fetchSetLogin = (loginInfo) => {
                             
                             if(isMatch) {
                                 console.log(`로그인 성공`)
-                                dispatch(loginStatus(true))
+                                dispatch(loginStatus(true, user.joinID))
                                 resolve(true) // 로그인성공
                             } else {
 // console.log(`isMatch = ${JSON.stringify(isMatch)}`);
                                 console.log(`로그인 실패`)
-                                dispatch(loginStatus(false))
+                                dispatch(loginStatus(false, ''))
                                 resolve(false) // 로그인실패
                             }
                         })                    
@@ -147,22 +145,23 @@ export const fetchSetLogin = (loginInfo) => {
                     console.error(error)
                     return false
                 })
-        })
-            
+        }) 
     }
 }
 
 // 클릭한날짜에 대한 메모post액션(입력)
-export const fetchClickDateNumber = (selectDate, memoContent) => {
-    // month가 1월에서 minus하면 0월로 들어가는거 방지
+export const fetchClickDateNumber = (selectDate, memoContent, loginID) => {
+    /** selectDate에 담겨져있는 객체형태의 파라미터를 가져와서 post하려고 기존에 post되어있떤 selectDate
+        들에게 영향을 안주고, 전달받은 파라미터selectDate를 스프레드연산자를 이용해서 신규추가하려고 
+        adjustMonthCompare라는 변수에 담았음(한마디로, 데이터의불변성) */
     const adjustMonthCompare = {
         ...selectDate,
     }
-
     return dispatch => {
         axios.post(`http://localhost:3001/memoList`, {
             selectDate: adjustMonthCompare,
             memoContent,
+            loginID
         })
         .then(response => {
             dispatch(newAddMemo(response.data))

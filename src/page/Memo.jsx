@@ -2,12 +2,11 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchClickDateNumber, fetchModifyMemo, insertDateNumber, fetchDeleteMemo, fetchAllMemoList } from '../redux/joinAction'
 
-const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, setCloseStatus, element}) => {
+const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, setCloseStatus, element, loginID}) => {
     const dispatch = useDispatch()
-
     // 날짜에 대한 메모저장
     const onDateMemoSave = (date, event) => {
-        dispatch(fetchClickDateNumber(date, currentMemo))
+        dispatch(fetchClickDateNumber(date, currentMemo, loginID))
         if(closeStatus === false) {
             alert(`저장되었습니다`)
         }

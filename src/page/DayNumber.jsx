@@ -73,6 +73,7 @@ function DayNumber(props) {
     // 상태구독
     const selectDate = useSelector(state => state.join.selectDate)
     const memoList = useSelector(state => state.join.memoList)
+    const loginID = useSelector(state => state.join.currentID)
 
     // 날짜에 대한 조회
     const onHandleDateNumber = (dateObj) => {
@@ -92,7 +93,8 @@ function DayNumber(props) {
             return (
                 value.selectDate.year === dateObj.year &&
                 value.selectDate.month === dateObj.month &&
-                value.selectDate.day === dateObj.day
+                value.selectDate.day === dateObj.day &&
+                value.loginID === dateObj.loginID
             )
         })
 
@@ -142,7 +144,8 @@ function DayNumber(props) {
                                                         setCurrentMemo={setCurrentMemo}
                                                         closeStatus={closeStatus}
                                                         setCloseStatus={setCloseStatus}
-                                                        element={element}>
+                                                        element={element}
+                                                        loginID={loginID}>
                                                 </Memo>
                                                 : null
                                             }
