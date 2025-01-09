@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo, fetchDeleteMemo } from '../redux/joinAction'
+import { insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { current } from '@reduxjs/toolkit'
 import Memo from './Memo'
@@ -85,7 +85,6 @@ function DayNumber(props) {
 // const adjustDateObj = {...dateObj} // 날짜를 객체화하고나서 확인하려고 일부러 이렇게 만들어서 로그찍어봄
         /// const dataMatch = memoList.find(value => value.selectDate === date)
         const dataMatch = Object.values(memoList).find((value) => {
-// console.log(`value = ${JSON.stringify(value)}`)
             if (!value.selectDate) {
                 console.error("selectDate가 유효하지 않거나 누락됨:", value)
                 return false
@@ -94,7 +93,7 @@ function DayNumber(props) {
                 value.selectDate.year === dateObj.year &&
                 value.selectDate.month === dateObj.month &&
                 value.selectDate.day === dateObj.day &&
-                value.loginID === dateObj.loginID
+                value.loginID === loginID
             )
         })
 
@@ -134,21 +133,22 @@ function DayNumber(props) {
                                 const { year, month, day } = element
                                 const isPrevMonth = currentMonth > month
                                 const isNextMonth = currentMonth < month
+
                                 // if(isPrevMonth) { // 첫번째주(=0)이면서 첫번째주의 수가 7보다(=일주일은 7일)보다 큰수가 있으면
-                                    return <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : ""} onClick={() => onHandleDateNumber(element)}>{day}
-                                            {
-                                                selectDate ?. year === year && selectDate ?. month === month && selectDate ?. day === day && closeStatus === false?
-                                                <Memo   currentMemo={currentMemo}
-                                                        memoList={memoList}
-                                                        setMemoID={setMemoID}
-                                                        setCurrentMemo={setCurrentMemo}
-                                                        closeStatus={closeStatus}
-                                                        setCloseStatus={setCloseStatus}
-                                                        element={element}
-                                                        loginID={loginID}>
-                                                </Memo>
-                                                : null
-                                            }
+                                    return  <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : ""} onClick={() => onHandleDateNumber(element)}>{day}
+                                                {
+                                                    selectDate ?. year === year && selectDate ?. month === month && selectDate ?. day === day && closeStatus === false?
+                                                    <Memo   currentMemo={currentMemo}
+                                                            memoList={memoList}
+                                                            setMemoID={setMemoID}
+                                                            setCurrentMemo={setCurrentMemo}
+                                                            closeStatus={closeStatus}
+                                                            setCloseStatus={setCloseStatus}
+                                                            element={element}
+                                                            loginID={loginID}>
+                                                    </Memo>
+                                                    : null
+                                                }
                                             </td>
                                     
                                 // }

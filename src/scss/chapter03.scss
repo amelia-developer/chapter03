@@ -296,3 +296,77 @@
         }
     }
 } // text-comment종료
+
+.weather-box {
+    text-align: left;
+    padding-left: 10px;
+    .title {
+        margin: 0;
+        font-size: 12px;
+        padding: 10px 0;
+    }
+    .imgbox {
+        display: block;
+        font-size: 14px;
+        img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .temperature {
+        font-size: 14px;
+        span {
+            display: inline-block;
+            &:first-child {
+                margin-right: 5px;
+            }
+        }
+    }
+} // weather-box종료
+
+.week-weather-box {
+    margin: 20px 0;
+    .title {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 20px;
+        text-align: left;
+        padding-left: 20px;
+    }
+    table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        position: relative;
+        caption {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        thead {
+            border-width: 0 0 1px 0;
+            border-style: double;
+            border-color: #000;
+            box-sizing: border-box;
+            th {
+                padding: 8px;
+                border-right: 1px dotted #000;
+                &:last-child {
+                    border-right: 0;
+                }
+            }
+        }
+        tbody {
+            td {
+                border-right: 1px dotted #000;
+                padding: 8px;
+                &:last-child {
+                    border-right: 0;
+                }
+            }
+        }
+    } // table종료
+} // week-weather-box종료

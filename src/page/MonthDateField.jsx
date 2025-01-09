@@ -5,11 +5,15 @@ import DayWeek from './DayWeek'
 import DayNumber from './DayNumber';
 import { useNavigate } from 'react-router-dom';
 import ColletMonthMemo from './ColletMonthMemo';
+import Weather from './Weather';
+import WeekWeather from './WeekWeather';
 
 const MonthDateField = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()+1)
   const [currentOfDays, setCurrentOfDays] = useState(new Date(currentYear, currentMonth, 0).getDate())
+  const [isWeather, setIsWeather] = useState('')
+  const [isCity, setIsCity] = useState('')
   
   useEffect(() => {
       setCurrentOfDays(new Date(currentYear, currentMonth, 0).getDate())
@@ -103,11 +107,19 @@ const MonthDateField = () => {
   }
 // console.log(`loginStatus = ${loginStatus}`);
 
+  const onWeather = (param) => {
+    setIsWeather(param)
+  }
+
+  const onCity = (param) => {
+    setIsCity(param)
+  }
 return (
     <>
       {
           loginStatus ? <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button> : null
       }
+      <Weather onWeatherHandler={onWeather} onCityHandler={onCity}></Weather>
       <div className="month-box">
           <span className="number-year">{currentYear}</span>
           <span className="number-month">{currentMonth}</span>
@@ -135,6 +147,7 @@ return (
       <ul className="text-comment">
           <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>
       </ul>
+      <WeekWeather isWeather={isWeather} isCity={isCity}></WeekWeather>
     </>
   )
 }

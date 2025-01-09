@@ -115,7 +115,7 @@ export const fetchSetLogin = (loginInfo) => {
                 .then(response => {
 // console.log(`response.data = ${JSON.stringify(response.data)}`);               
                     const user = response.data.find(u => u.joinID === joinID)
-console.log(`user = ${JSON.stringify(user)}`);
+// console.log(`user = ${JSON.stringify(user)}`);
                     if(!user) {
                         alert(`id가 존재하지 않습니다`) 
                         resolve(false)   
