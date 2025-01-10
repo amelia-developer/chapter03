@@ -69,7 +69,7 @@ export const fetchSetJoin = (joinInfo) => {
         const key = uuid4()
 
         // 회원가입 정보 저장
-        axios.post(`http://localhost:3001/join`, {
+        axios.post(`https://lava-handy-jackal.glitch.me/join`, {
             key,
             joinID,
             joinPW: hashPW
@@ -88,7 +88,7 @@ export const fetchSetJoin = (joinInfo) => {
 // id중복체크 액션
 export const fetchMultipleID = (multipleID) => {
     return () => {    
-        axios.get(`http://localhost:3001/join`)
+        axios.get(`https://lava-handy-jackal.glitch.me/join`)
             .then(response => {
                 const multiUser = response.data.find(newUser => newUser.joinID === multipleID)
                 if(multiUser) {
@@ -111,7 +111,7 @@ export const fetchSetLogin = (loginInfo) => {
             const {joinID, joinPW} = loginInfo
             
             // id조회
-            axios.get(`http://localhost:3001/join`)
+            axios.get(`https://lava-handy-jackal.glitch.me/join`)
                 .then(response => {
 // console.log(`response.data = ${JSON.stringify(response.data)}`);               
                     const user = response.data.find(u => u.joinID === joinID)
@@ -158,7 +158,7 @@ export const fetchClickDateNumber = (selectDate, memoContent, loginID) => {
         ...selectDate,
     }
     return dispatch => {
-        axios.post(`http://localhost:3001/memoList`, {
+        axios.post(`https://lava-handy-jackal.glitch.me/memoList`, {
             selectDate: adjustMonthCompare,
             memoContent,
             loginID
@@ -176,7 +176,7 @@ export const fetchClickDateNumber = (selectDate, memoContent, loginID) => {
 // 클릭한날짜에 대한 메모get액션(전체 불러오기)
 export const fetchAllMemoList = () => {
     return dispatch => {
-        axios.get(`http://localhost:3001/memoList/`)
+        axios.get(`https://lava-handy-jackal.glitch.me/memoList/`)
             .then(response => {
                 dispatch(allMemoList(response.data))
             })
@@ -189,7 +189,7 @@ export const fetchAllMemoList = () => {
 // 클릭한날짜에 대한 메모get액션(각각 불러오기)
 export const fetchMemoList = (memoData) => {
     return dispatch => {
-        axios.get(`http://localhost:3001/memoList/${memoData}`)
+        axios.get(`https://lava-handy-jackal.glitch.me/memoList/${memoData}`)
             .then(response => {
                 dispatch(clickEachMemo(response.data))
             })
@@ -203,7 +203,7 @@ export const fetchMemoList = (memoData) => {
 export const fetchModifyMemo = (selectDate) => {
     return dispatch => {
         const memoContent = selectDate.memoContent
-        axios.patch(`http://localhost:3001/memoList/${selectDate.id}`, {
+        axios.patch(`https://lava-handy-jackal.glitch.me/memoList/${selectDate.id}`, {
             memoContent: memoContent
         })
         .then(response => {
@@ -220,7 +220,7 @@ export const fetchDeleteMemo = (selectDate) => {
 console.log(`selectDate = ${JSON.stringify(selectDate)}`);
     return dispatch => {
         const memoContent = selectDate.memoContent
-        axios.delete(`http://localhost:3001/memoList/${selectDate.id}`, {
+        axios.delete(`https://lava-handy-jackal.glitch.me/memoList/${selectDate.id}`, {
             memoContent: memoContent
         })
         .then(response => {

@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchSetLogin } from '../../redux/joinAction'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -45,6 +45,7 @@ console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(islog
             setInputType("text")
         }
     }
+
     return (
         <div className="join-box">
             <h2>로그인</h2>

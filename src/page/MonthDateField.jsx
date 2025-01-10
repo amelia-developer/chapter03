@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { resetLoginStatus } from '../redux/joinAction'
 import DayWeek from './DayWeek'
 import DayNumber from './DayNumber';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ColletMonthMemo from './ColletMonthMemo';
 import Weather from './Weather';
 import WeekWeather from './WeekWeather';
@@ -105,7 +105,7 @@ const MonthDateField = () => {
     dispatch(resetLoginStatus(false))
     navigate(`/`)
   }
-// console.log(`loginStatus = ${loginStatus}`);
+console.log(`date화면에서 loginStatus = ${loginStatus}`);
 
   const onWeather = (param) => {
     setIsWeather(param)
@@ -114,40 +114,61 @@ const MonthDateField = () => {
   const onCity = (param) => {
     setIsCity(param)
   }
+
+  // 로그인을 안한상태에서 url을 화면의 주소에 직접 입력했을때, date로 넘어가지 않도록 하기 위함
+  const location = useLocation()
+  useEffect(() => {
+      if(!loginStatus) {
+// console.log(`로그인화면에서 loginStatus = ${JSON.stringify(loginStatus)}`);
+          navigate(`/`)
+          alert(`로그인이 필요합니다\n로그인화면으로 돌아갑니다`);
+      } else {
+          navigate(`/date`)
+// console.log(`date화면에서 loginstatus = ${JSON.stringify(loginStatus)}`);
+      }
+  }, [loginStatus, navigate, location.pathname])
+
 return (
     <>
       {
-          loginStatus ? <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button> : null
-      }
-      <Weather onWeatherHandler={onWeather} onCityHandler={onCity}></Weather>
-      <div className="month-box">
-          <span className="number-year">{currentYear}</span>
-          <span className="number-month">{currentMonth}</span>
-          <span className="text-unit">월</span>
-          <div className="arrow-box">
-              <button className="btn-prev" onClick={onPrevMonth}>&lt;</button>
-              <button className="btn-next" onClick={onNextMonth}>&gt;</button>
+          loginStatus ? 
+          <>
+          <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button>
+          
+          
+      
+          <Weather onWeatherHandler={onWeather} onCityHandler={onCity}></Weather>
+          <div className="month-box">
+              <span className="number-year">{currentYear}</span>
+              <span className="number-month">{currentMonth}</span>
+              <span className="text-unit">월</span>
+              <div className="arrow-box">
+                  <button className="btn-prev" onClick={onPrevMonth}>&lt;</button>
+                  <button className="btn-next" onClick={onNextMonth}>&gt;</button>
+              </div>
           </div>
-      </div>
-      <div className="inner-box">
-        <div className="date-box">
-            <table>
-                <thead>
-                    <tr>
-                        <DayWeek weeks={weeks}></DayWeek>
-                    </tr>
-                </thead>
-                <tbody>
-                    <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear}></DayNumber>
-                </tbody>
-            </table> 
-        </div>
-        <ColletMonthMemo currentMonth={currentMonth} currentYear={currentYear}></ColletMonthMemo>
-      </div>
-      <ul className="text-comment">
-          <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>
-      </ul>
-      <WeekWeather isWeather={isWeather} isCity={isCity}></WeekWeather>
+          <div className="inner-box">
+            <div className="date-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <DayWeek weeks={weeks}></DayWeek>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear}></DayNumber>
+                    </tbody>
+                </table> 
+            </div>
+            <ColletMonthMemo currentMonth={currentMonth} currentYear={currentYear}></ColletMonthMemo>
+          </div>
+          <ul className="text-comment">
+              <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>
+          </ul>
+          <WeekWeather isWeather={isWeather} isCity={isCity}></WeekWeather>
+          </>
+          : null      
+      }
     </>
   )
 }
