@@ -155,6 +155,11 @@
     .date-box, .collect-memo-box {
         width: 100%; /* 전체 너비 차지 */
     }
+    .date-box {
+        table tbody td .box {
+            width: 30vw !important;
+        }
+    }
 }
 
 /* 모바일 이하 (480px 이하) */
@@ -170,6 +175,9 @@
 
     .date-box {
         margin-bottom: 3%;
+        table tbody td .box {
+            width: 30vw !important;
+        }
     }
 }
 
@@ -205,6 +213,23 @@
                 border-bottom: 1px solid #000;
                 cursor: pointer;
                 position: relative;
+                &:hover {
+                    position: relative;
+                    &:after {
+                        display: inline-block;
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 29px;
+                        height: 29px;
+                        background-color: transparent;
+                        border-radius: 100%;
+                        border: 1px solid #D22C26;
+                        box-sizing: border-box;    
+                    }
+                }
                 .box {
                     position: absolute;
                     background-color: #fff;
@@ -214,8 +239,9 @@
                     left: 50%;
                     transform: translateX(-50%);
                     z-index: 10;
-                    width: 90%;
-                    height: 250px;
+                    // width: 90%;
+                    width: 15vw;
+                    height: 260px;
                     font-size: 12px;
                     text-align: left;
                     padding: 10px;
@@ -231,13 +257,16 @@
                         }    
                     } // text-memo종료
                     .btn-box {
-                        position: absolute;
+                        // position: absolute;
+                        position: relative;
                         bottom: 10px;
                         display: flex;
                         flex-direction: row;
                         flex-wrap: wrap;
+                        width: 100%;
+                        justify-content: center;
                         button {
-                            width: 50%;
+                            width: 49%;
                         }
                     } // btn-box종료
                 } // box종료
