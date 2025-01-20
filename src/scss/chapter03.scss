@@ -255,7 +255,7 @@
     } // table종료
 } // date-box종료
 
-.join-wrap {
+.login-wrap, .join-wrap {
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
@@ -266,6 +266,14 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    &.join-wrap {
+        background-image: url('../img/login_bg3.png');
+        .join-box {
+            .inner {
+                width: 80%;
+            }
+        }
+    }
     .join-box {
         width: 100%;
         h2 {
@@ -310,6 +318,7 @@
             cursor: pointer;
             &.btn_multipleID {
                 background-color: #53e;
+                width: 30%;
             }
         }
         ul {
@@ -321,6 +330,7 @@
                 span {
                     position: relative;
                     padding-left: 10px;
+                    color: #fff;
                     &:before {
                         content: '';
                         position: absolute;

@@ -47,7 +47,7 @@ console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(islog
     }
 
     return (
-        <div className='join-wrap'>
+        <div className='login-wrap'>
             <div className="join-box">
                 <h2>로그인</h2>
                 <form onSubmit={onLoginStart}>

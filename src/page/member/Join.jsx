@@ -68,26 +68,28 @@ const Join = () => {
         }
     }
     return (
-        <div className="join-box">
-            <h2>회원가입</h2>
-            <form onSubmit={onJoinEnd}>
-                <div className="inner">
-                    <label><input type="text" placeholder="아이디를 입력하세요" ref={(el) => joinRef.current[0] = el} defaultValue="" /></label>
-                    <button type="button" className="btn_multipleID" onClick={() => onMultipleID(joinRef.current[0].value)}>ID중복체크</button>
-                </div>
-                <div className="inner">
-                    <label>
-                        <input type={inputType} placeholder="비밀번호를 입력하세요" ref={(el) => joinRef.current[1] = el} defaultValue="" onClick={onPasswordCheck}/>
-                        <span className="material-icons toggleVisible">{visibilityText}</span>
-                    </label>
-                </div>
-                <button type="submit">가입완료</button>
-            </form>
-            
-            <ul>
-                <li><span>ID는 6글자 이상, 12글자 이하로 생성</span></li>
-                <li><span>PW는 8글자 이상, 16글자 이하로 생성</span></li>
-            </ul>
+        <div className='join-wrap'>
+            <div className="join-box">
+                <h2>회원가입</h2>
+                <form onSubmit={onJoinEnd}>
+                    <div className="inner">
+                        <label><input type="text" placeholder="아이디를 입력하세요" ref={(el) => joinRef.current[0] = el} defaultValue="" /></label>
+                        <button type="button" className="btn_multipleID" onClick={() => onMultipleID(joinRef.current[0].value)}>ID중복체크</button>
+                    </div>
+                    <div className="inner">
+                        <label>
+                            <input type={inputType} placeholder="비밀번호를 입력하세요" ref={(el) => joinRef.current[1] = el} defaultValue="" onClick={onPasswordCheck}/>
+                            <span className="material-icons toggleVisible">{visibilityText}</span>
+                        </label>
+                    </div>
+                    <button type="submit">가입완료</button>
+                </form>
+                
+                <ul>
+                    <li><span>ID는 6글자 이상, 12글자 이하로 생성</span></li>
+                    <li><span>PW는 8글자 이상, 16글자 이하로 생성</span></li>
+                </ul>
+            </div>
         </div>
     )
 }
