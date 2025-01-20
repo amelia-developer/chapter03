@@ -7,19 +7,22 @@ import React from 'react';
 import { Provider } from "react-redux";
 import { store } from './redux/store'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ThemaProvider } from './context/ThemaContext'
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter future={{v7_startTransition: true, v7_relativeSplatPath: true}}>
-        <Provider store={store}>
+      <Provider store={store} >
+        <ThemaProvider>
+          <BrowserRouter future={{v7_startTransition: true, v7_relativeSplatPath: true}}>        
             <Routes>
               <Route path="/" element={<Login></Login>}/>
               <Route path="/join" element={<Join></Join>}/>
               <Route path="/date" element={<Calendar></Calendar>}/>
-            </Routes>
-        </Provider>
-      </BrowserRouter>
+            </Routes>          
+          </BrowserRouter>
+        </ThemaProvider>
+      </Provider>
     </div>
   );
 }

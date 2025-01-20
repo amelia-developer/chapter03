@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ColletMonthMemo from './ColletMonthMemo';
 import Weather from './Weather';
 import WeekWeather from './WeekWeather';
+import Thema from './Thema';
 
 const MonthDateField = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
@@ -128,16 +129,14 @@ console.log(`date화면에서 loginStatus = ${loginStatus}`);
       }
   }, [loginStatus, navigate, location.pathname])
 
+  
 return (
     <>
       {
           loginStatus ? 
           <>
+          <Thema></Thema>
           <button type="button" onClick={onLogoutEnd} className="btn-logout">로그아웃</button>
-          
-          
-      
-          <Weather onWeatherHandler={onWeather} onCityHandler={onCity}></Weather>
           <div className="month-box">
               <span className="number-year">{currentYear}</span>
               <span className="number-month">{currentMonth}</span>
@@ -165,6 +164,7 @@ return (
           <ul className="text-comment">
               <li><span>해당 날짜에 메모를 기입하고 싶으면 날짜를 클릭하세요</span></li>
           </ul>
+          <Weather onWeatherHandler={onWeather} onCityHandler={onCity}></Weather>
           <WeekWeather isWeather={isWeather} isCity={isCity}></WeekWeather>
           </>
           : null      
