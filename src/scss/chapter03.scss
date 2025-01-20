@@ -26,7 +26,7 @@
 
 .month-box {
     position: relative;
-    padding-top: 10vw;
+    padding-top: 8vw;
     .number-year {
         font-size: 38px;
         font-weight: 900;
@@ -52,28 +52,35 @@
         justify-content: space-between;
         margin: 0 10%;
         position: absolute;
-        top: 66%;
+        top: 59%;
         width: 80%;
         button {
             width: 5vw;
             height: 5vw;
             font-size: 20px;
             cursor: pointer;
+            padding: 0;
+            border: 0;
         }
     } // arrow-box종료
 } // month-box종료
 
 .inner-box {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 5vw;
     gap: 2vw;
     .date-box {
-        width: 70%;
+        width: 96%;
+        flex: 1 1 0;
+        padding: 0 2%;
     }
     .collect-memo-box {
-        width: 30%;
+        width: 96%;
+        flex: 1 1 0;
         text-align: left;
         border: 1px dotted #000;
+        margin: 0 2%;
         .title {
             text-align: center;
             display: block;
@@ -96,7 +103,7 @@
                 .text {
                     display: inline-block;
                     margin-left: 10px;
-                    max-width: 24vw;
+                    max-width: 50vw;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
@@ -105,6 +112,34 @@
         } // ul종료
     }
 } // inner-box종료
+
+/* 태블릿 이하 (768px 이하) */
+@media (max-width: 768px) {
+    .inner-box {
+        flex-direction: column; /* 수직 정렬 */
+        gap: 1vw; /* 간격 조정 */
+    }
+
+    .date-box, .collect-memo-box {
+        width: 100%; /* 전체 너비 차지 */
+    }
+}
+
+/* 모바일 이하 (480px 이하) */
+@media (max-width: 480px) {
+    .inner-box {
+        flex-direction: column; /* 수직 정렬 */
+        gap: 1vw; /* 간격 조정 */
+    }
+
+    .date-box, .collect-memo-box {
+        width: 100%; /* 수직으로 쌓이도록 설정 */
+    }
+
+    .date-box {
+        margin-bottom: 3%;
+    }
+}
 
 .date-box {
     display: flex;
@@ -117,9 +152,9 @@
         thead {
             border-bottom: 1px solid #000;
             th {
-                font-size: 24px;
+                font-size: 1.2rem;
                 font-weight: 400;
-                height: 50px;
+                height: 2.5rem;
                 border-right: 1px solid #000;
                 &.saturday {
                     color: blue;
@@ -131,9 +166,9 @@
         } // thead종료
         tbody {
             td {
-                font-size: 24px;
+                font-size: 1.2rem;
                 font-weight: 400;
-                height: 70px;
+                height: 2.5rem;
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
                 cursor: pointer;
@@ -188,76 +223,91 @@
     } // table종료
 } // date-box종료
 
-.join-box {
-    h2 {
-        font-size: 38px;
-        font-weight: 900;
-    }
-    .inner {
-        display: flex;
-        width: 50%;
-        margin: 0 auto;
-    } // inner종료
-    label {
-        display: block;
-        width: 50%;
-        height: 30px;
-        margin: 0 auto 30px 0;
-        position: relative;
-        &.lbl_join {
-            margin: 0 auto 30px auto;
+.join-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../img/login_bg2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    .join-box {
+        width: 100%;
+        h2 {
+            font-size: 38px;
+            font-weight: 900;
+            margin-top: 0;
+            color: #fff;
         }
-        input {
-            width: 100%;
-            height: inherit;
-            padding: 0 10px;
-        }
-        span {
-            position: absolute;
-            right: 0;
-            top: 5px;
-            display: block;
-            cursor: pointer;
-        }
-    }
-    button {
-        background-color: #778899;
-        color: #fff;
-        height: 40px;
-        width: 20%;
-        border: none;
-        cursor: pointer;
-        &.btn_multipleID {
-            background-color: #53e;
-        }
-    }
-    ul {
-        padding: 0;
-        li {
-            width: 90%;
+        .inner {
+            display: flex;
+            width: 50%;
             margin: 0 auto;
-            list-style: none;
+        } // inner종료
+        label {
+            display: block;
+            width: 60%;
+            height: 30px;
+            margin: 0 auto 30px 0;
+            position: relative;
+            &.lbl_join {
+                margin: 0 auto 30px auto;
+            }
+            input {
+                width: 100%;
+                height: inherit;
+                padding: 0 10px;
+            }
             span {
-                position: relative;
-                padding-left: 10px;
-                &:before {
-                    content: '';
-                    position: absolute;
-                    top: 9px;
-                    left: 0;
-                    background-color: #000;
-                    width: 3px;
-                    height: 3px;
-                    border-radius: 100%;
-                }
-            }           
-        } // li종료
-    }
-    .btn-join {
-        margin-left: 10px;
-        background-color: #656565;
-    }
-} // join-box종료
+                position: absolute;
+                right: 0;
+                top: 5px;
+                display: block;
+                cursor: pointer;
+            }
+        }
+        button {
+            background-color: #778899;
+            color: #fff;
+            height: 40px;
+            width: 20%;
+            border: none;
+            cursor: pointer;
+            &.btn_multipleID {
+                background-color: #53e;
+            }
+        }
+        ul {
+            padding: 0;
+            li {
+                width: 90%;
+                margin: 0 auto;
+                list-style: none;
+                span {
+                    position: relative;
+                    padding-left: 10px;
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: 9px;
+                        left: 0;
+                        background-color: #000;
+                        width: 3px;
+                        height: 3px;
+                        border-radius: 100%;
+                    }
+                }           
+            } // li종료
+        }
+        .btn-join {
+            margin-left: 10px;
+            background-color: #656565;
+        }
+    } // join-box종료
+} // join-wrap종료
 
 .btn-logout {
     float: right;
@@ -266,7 +316,7 @@
     margin: 0;
     border: none;
     height: 35px;
-    width: 15%;
+    width: 18%;
     cursor: pointer;
     display: block;
     position: relative;
@@ -274,14 +324,15 @@
 } // btn-logout종료
 
 .text-comment {
-    padding: 0 0 0 20px;
-    margin: 20px 0 0 0;
+    padding: 0 2%;
+    margin: 0.2rem 0 0 0;
     text-align: center;
     li {
         list-style: none;
         span {
             position: relative;
             padding-left: 10px;
+            font-size: 0.8rem;
             &:before {
                 content: '';
                 display: inline-block;
@@ -299,7 +350,7 @@
 
 .weather-box {
     text-align: left;
-    padding-left: 10px;
+    padding: 0 2%;
     .title {
         margin: 0;
         font-size: 12px;
@@ -326,12 +377,13 @@
 
 .week-weather-box {
     margin: 20px 0;
+    padding: 0 2%;
     .title {
         display: block;
         font-size: 14px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         text-align: left;
-        padding-left: 20px;
+        padding-left: 2%;
     }
     table {
         table-layout: fixed;

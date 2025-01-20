@@ -1,4 +1,3 @@
-import { current } from '@reduxjs/toolkit'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
@@ -8,7 +7,6 @@ const ColletMonthMemo = ({currentMonth, currentYear}) => {
     // 상태구독
     const memoList = useSelector(state => state.join.memoList)
     const currentUserID = useSelector(state => state.join.currentID)
-
     // choiceYear에서 ?. selectDate.year 이거는 memoList.find하면 객체형태잖아. 거기서 객체가 있으면 selectDate.year을 갖고올거임
     // const choiceYear = memoList.find(result => result.selectDate.year === currentYear)?. selectDate.year
     // const choiceMonth = memoList.find(result => result.selectDate.month === currentMonth)?. selectDate.month
