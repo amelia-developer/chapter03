@@ -14,6 +14,8 @@ const Join = () => {
     const joinID = useSelector(state => state.join.joinID)
     const joinPW = useSelector(state => state.join.joinPW)
 
+    const [isloading, setIsloading] = useState(false) // 로딩
+    
     // const [localJoinID, setLocalJoinID] = useState(joinID)
     
     // const onJoinID = (e) => {
@@ -22,6 +24,7 @@ const Join = () => {
 
     const onJoinEnd = (e) => {
         e.preventDefault() // form태그의 기본제출방지
+        setIsloading(true) // 로딩
 
         // 유효성검사
         const validId = joinRef.current[0].value.length >= 6 && joinRef.current[0].value.length <= 12
@@ -34,23 +37,28 @@ const Join = () => {
 
         if(!validId) {
             alert(`유효하지 않은 id입니다`)
+            window.location.reload()
         } else if(!validPW) {
             alert(`유효하지 않은 pw입니다`)
+            window.location.reload()
         } else {
             alert(`가입되었습니다`)
             dispatch(fetchSetJoin(joinInfo))
+            setTimeout(() => { // 로딩
+                setIsloading(true)
+            }, 3000)
             navigate(`/date`)
         }
     }
 
-    useEffect(() => {
-        // 초기화
-        if(joinID !== '' || joinPW !== '') {
-            // setLocalJoinID('')
-            joinRef.current[0].value = ''
-            joinRef.current[1].value = ''
-        }
-    }, [joinID, joinPW])
+    // useEffect(() => {
+    //     // 초기화
+    //     if(joinID !== '' || joinPW !== '') {
+    //         // setLocalJoinID('')
+    //         joinRef.current[0].value = ''
+    //         joinRef.current[1].value = ''
+    //     }
+    // }, [joinID, joinPW])
 
 
     // id중복체크
@@ -66,6 +74,18 @@ const Join = () => {
             setVisibilityText("visibility")            
             setInputType("text")
         }
+    }
+
+    if(isloading) {
+        return  <div id="container">
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <h1 className="tit-Loadng">Loading...</h1>
+                </div>
     }
     return (
         <div className='join-wrap'>

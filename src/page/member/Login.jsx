@@ -11,8 +11,11 @@ const Login = () => {
     const [visibilityText, setVisibilityText] = useState("visibility_off")
     const [inputType, setInputType] = useState("password")
 
+    const [isloading, setIsloading] = useState(false) // 로딩
+
     const onLoginStart = (e) => {
         e.preventDefault() // form태그의 기본제출방지
+        setIsloading(true) // 로딩
         const loginInfo = {
             joinID: joinRef.current[0].value,
             joinPW: joinRef.current[1].value
@@ -20,6 +23,9 @@ const Login = () => {
         dispatch(fetchSetLogin(loginInfo))
             .then((isloginSuccessful) => { // isloginSuccessful이 변수에는 fetchSetLogin을 디스패치한(=promise결과를) 내용을 담는다
                 if(isloginSuccessful) {
+                    setTimeout(() => { // 로딩
+                        setIsloading(true)
+                    }, 3000)    
                     navigate(`/date`)
 console.log(`로그인성공했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
                 } else {
@@ -46,6 +52,18 @@ console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(islog
         }
     }
 
+    if(isloading) {
+console.log(`isloading = ${JSON.stringify(isloading)}`);
+        return  <div id="container">
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <div className="stick"></div>
+                    <h1 className="tit-Loadng">Loading...</h1>
+                </div>
+    }
     return (
         <div className='login-wrap'>
             <div className="join-box">

@@ -16,6 +16,8 @@ const MonthDateField = () => {
   const [isWeather, setIsWeather] = useState('')
   const [isCity, setIsCity] = useState('')
   
+  const currentDate = new Date().getDate()
+
   useEffect(() => {
       setCurrentOfDays(new Date(currentYear, currentMonth, 0).getDate())
   }, [currentYear, currentMonth])
@@ -155,7 +157,7 @@ return (
                         </tr>
                     </thead>
                     <tbody>
-                        <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear}></DayNumber>
+                        <DayNumber currentOfDays={currentOfDays} dayOfFirstDay={dayOfFirstDay} dayOfLastDay={dayOfLastDay} prevLastDate={prevLastDate} currentMonth={currentMonth} currentYear={currentYear} currentDate={currentDate}></DayNumber>
                     </tbody>
                 </table> 
             </div>

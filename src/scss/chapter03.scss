@@ -68,7 +68,7 @@
             content: '.';
             position: absolute;
             bottom: 0;
-            right: -1vw;
+            right: -2vw;
             display: inline-block;
         }
     } // number-year종료
@@ -213,6 +213,23 @@
                 border-bottom: 1px solid #000;
                 cursor: pointer;
                 position: relative;
+                &.today {
+                    position: relative;
+                    &:after {
+                        content: 'today';
+                        display: inline-block;
+                        position: absolute;
+                        top: 0;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background-color: #FFDAB9;
+                        color: #000;
+                        font-size: 0.6rem;
+                        width: 1.8rem;
+                        height: 0.7rem;
+                        line-height: 1
+                    }
+                }
                 &:hover {
                     position: relative;
                     &:after {
@@ -503,3 +520,128 @@
         }
     } // table종료
 } // week-weather-box종료
+
+// 로딩[s]
+$text_color: #DC554F;
+$stick_color: #DC554F; //Changes the colour of all sticks
+$stick_length: 30px; //Changes length of all sticks
+$stick_distance: -8px; //Changes distance between sticks (will need editing after 30px)
+
+@import url(https://fonts.googleapis.com/css?family=Lato:100,300,700);
+
+.tit-Loadng {  
+ font-family: 'Lato';
+ color:$text_color;
+ text-transform: uppercase;
+ font-size:1em;
+ letter-spacing:1.5px;
+ text-align:center;
+ width:auto;
+ margin-top:20px;
+ margin-left: 8px;
+ -webkit-animation: fade 2s infinite;
+ -moz-animation: fade 2s infinite;
+}
+
+#container { 
+    width:100%;
+    height: 100vh;
+    margin:auto;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.stick {
+ width: $stick_length;
+ height:3px;
+ background:$stick_color;
+ display:inline-block;
+ margin-left:$stick_distance;
+ &:first-child {
+    margin-left: -2px;
+ }
+}
+
+.stick:nth-child(n) {  
+  transform:rotate(30deg);
+  -ms-transform:rotate(30deg); /* IE 9 */
+  -webkit-transform:rotate(30deg); /* Safari and Chrome */
+   -moz-transform:rotate(30deg);
+   -webkit-animation: fall 2s infinite;
+   -moz-animation: fall 2s infinite;
+}
+.stick:nth-child(2n) {  
+   transform:rotate(-30deg);
+  -ms-transform:rotate(-30deg); /* IE 9 */
+  -webkit-transform:rotate(-30deg); /* Safari and Chrome */
+  -moz-transform:rotate(-30deg);
+  -webkit-animation: rise 2s infinite;
+  -moz-animation: rise 2s infinite;
+}
+
+@-webkit-keyframes rise {
+    50% { 
+        transform:rotate(30deg);
+        -ms-transform:rotate(30deg); /* IE 9 */
+        -webkit-transform:rotate(30deg);
+        -moz-transform:rotate(30deg); 
+    }
+}
+@-moz-keyframes rise {
+    50% { 
+        transform:rotate(30deg);
+        -ms-transform:rotate(30deg); /* IE 9 */
+        -webkit-transform:rotate(30deg);
+        -moz-transform:rotate(30deg); 
+    }
+}
+
+@keyframes rise {
+  50% { 
+    transform:rotate(30deg);
+    -ms-transform:rotate(30deg); /* IE 9 */
+    -webkit-transform:rotate(30deg);
+    -moz-transform:rotate(30deg); 
+    }
+}
+
+@-webkit-keyframes fall {
+  50% { 
+    transform:rotate(-30deg);
+    -ms-transform:rotate(-30deg); /* IE 9 */
+    -webkit-transform:rotate(-30deg);
+    -moz-transform:rotate(30deg); 
+    }
+}
+@-moz-keyframes fall {
+ 50% { 
+    transform:rotate(-30deg);
+    -ms-transform:rotate(-30deg); /* IE 9 */
+    -webkit-transform:rotate(-30deg);
+    -moz-transform:rotate(-30deg); 
+ }
+}
+@keyframes fall {
+  50% { 
+    transform:rotate(-30deg);
+    -ms-transform:rotate(-30deg); /* IE 9 */
+    -webkit-transform:rotate(-30deg);
+    -moz-transform:rotate(30deg); 
+  }
+}
+
+@-webkit-keyframes fade {
+  50%{opacity:0.5}
+  100%{opacity:1}
+}
+@-moz-keyframes fade {
+ 50%{opacity:0.5}
+  100%{opacity:1}
+}
+@keyframes fade {
+   50%{opacity:0.5}
+  100%{opacity:1}
+}
+// 로딩[e]

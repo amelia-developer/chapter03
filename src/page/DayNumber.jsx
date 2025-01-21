@@ -12,6 +12,8 @@ function DayNumber(props) {
 
     let dayLastNum = props.currentOfDays
 
+    let currentDate = props.currentDate
+
     // 각 달력의 일자에 대해서 메모를 저장하고자 년도와 월을 객체와 시키려고 props로 전달받음
     let currentYear = props.currentYear
     let currentMonth = props.currentMonth
@@ -59,6 +61,7 @@ function DayNumber(props) {
     }
 
 // console.log(`dayArr = ${JSON.stringify(dayArr)}`);
+
     /**
      * 메모창열고 닫히는거에 따른 상태값 true/false정의
      * 1. 맨처음엔 closeStatus : true = 메모창 안보임
@@ -122,10 +125,19 @@ function DayNumber(props) {
         <>
             {
                 week7Arr.map((numberDate, index) => 
-                    // console.log(`index = ${index}`); // 0, 1, 2, 3, 4 -> 몇번째주인지(0은 첫번째주 = tr)          
+                    // console.log(`index = ${index}`); // 0, 1, 2, 3, 4 -> 몇번째주인지(0은 첫번째주 = tr)   
                     <tr key={index}>
                          {
                              numberDate.map((element, idx) => {
+                                // today구분하기[s]
+                                const nowYear = new Date().getFullYear()
+                                const nowMonth = new Date().getMonth()+1
+                                const isToday = 
+                                    element.year === nowYear && 
+                                    element.month === nowMonth && 
+                                    element.day === currentDate
+                                // today구분하기[e]
+
                                 // 메모의 날짜가 이번달메모인지, 지난달메모인지 구분
                                 // const isPrevMonth = index === 0 && element > 7 // 첫번째주 이면서 날짜가 7보다 큰 경우(지난달)
                                 // const isNextMonth = index >= 4 && element < 7 // 마지막주 이면서 날짜가 7보다 작은 경우(다음달)
@@ -135,7 +147,7 @@ function DayNumber(props) {
                                 const isNextMonth = currentMonth < month
 
                                 // if(isPrevMonth) { // 첫번째주(=0)이면서 첫번째주의 수가 7보다(=일주일은 7일)보다 큰수가 있으면
-                                    return  <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : ""} onClick={() => onHandleDateNumber(element)}>{day}
+                                    return  <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : isToday ? 'today': ''} onClick={() => onHandleDateNumber(element)}>{day}
                                                 {
                                                     selectDate ?. year === year && selectDate ?. month === month && selectDate ?. day === day && closeStatus === false?
                                                     <Memo   currentMemo={currentMemo}
