@@ -41,6 +41,9 @@
             table * {
                 border-color: #fff;
             }
+            table td .box textarea {
+                border-color: #000;
+            }
         }
         .weather-box {
             background-color: #000;
@@ -289,7 +292,7 @@
                         width: 100%;
                         justify-content: center;
                         button {
-                            width: 49%;
+                            width: 50%;
                         }
                     } // btn-box종료
                 } // box종료

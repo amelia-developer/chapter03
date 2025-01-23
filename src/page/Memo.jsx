@@ -61,6 +61,7 @@ const Memo = ({currentMemo, memoList, setMemoID, setCurrentMemo, closeStatus, se
         event.stopPropagation()
         setCloseStatus(true)
     }
+
   return (
     <>
         <div className="box">

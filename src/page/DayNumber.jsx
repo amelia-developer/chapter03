@@ -78,6 +78,56 @@ function DayNumber(props) {
     const memoList = useSelector(state => state.join.memoList)
     const loginID = useSelector(state => state.join.currentID)
 
+    // 날짜에 대한 메모박스 위치 동적으로 조정
+    const moveMemoBox = () => {
+        document.querySelectorAll('.date-box table tbody td').forEach((cell) => {
+          const box = cell.querySelector('.box'); // 메모 박스
+          if (box) {
+            box.style.display = 'block'; // 박스를 표시
+            
+            // dom 업데이트 후 위치확인 하고, 조정하기
+            setTimeout(() => {
+              const boxRect = box.getBoundingClientRect() // 박스 위치 정보
+              const windowWidth = window.innerWidth // 화면 너비
+      
+console.log("boxRect:", boxRect)
+console.log("windowWidth:", windowWidth)
+      
+              // 오른쪽 끝 감지
+              if (boxRect.right > windowWidth) {
+                box.style.left = 'auto'
+                box.style.right = '0'
+                box.style.transform = 'none'
+              }
+
+              // 왼쪽 끝 감지
+              if (boxRect.left < 0) {
+                box.style.left = '0'
+                box.style.right = 'auto'
+                box.style.transform = 'translateX(0)'
+              } else if (boxRect.left < windowWidth / 2) {
+                // 박스가 화면 왼쪽 절반에 있을 때, 위치를 조정
+                box.style.left = '0'
+                box.style.right = 'auto'
+                box.style.transform = 'translateX(0)'
+              }
+
+              // 우측 절반 감지
+            if (boxRect.right > windowWidth / 2) {
+                // 박스가 화면 우측 절반에 있을 때 위치 조정
+                box.style.left = 'auto'
+                box.style.right = '0'
+                box.style.transform = 'translateX(0)'
+            }
+              
+console.log(`box.style.left = ${box.style.left}`)
+console.log(`box.style.right = ${box.style.right}`)
+console.log(`box.style.transform = ${box.style.transform}`)
+            }, 0)
+          }
+        })
+      }
+
     // 날짜에 대한 조회
     const onHandleDateNumber = (dateObj) => {
 // console.log(`ttt`);
@@ -85,6 +135,11 @@ function DayNumber(props) {
         dispatch(insertDateNumber(dateObj))
         dispatch(fetchAllMemoList(dateObj))
 
+        // DOM 업데이트 이후 메모 박스 위치 조정
+        setTimeout(() => {
+            moveMemoBox()
+        }, 0) // 최소 지연시간으로 DOM 업데이트 이후 실행
+        
 // const adjustDateObj = {...dateObj} // 날짜를 객체화하고나서 확인하려고 일부러 이렇게 만들어서 로그찍어봄
         /// const dataMatch = memoList.find(value => value.selectDate === date)
         const dataMatch = Object.values(memoList).find((value) => {
@@ -115,6 +170,10 @@ function DayNumber(props) {
         dispatch(fetchAllMemoList())
         dispatch(insertDateNumber(null))
     }, [dispatch]) // closeStatus를 의존성배열에서 제거하여 불필요한 재렌더링 방지
+
+    useEffect(() => {
+        moveMemoBox()
+    }, [memoList])
 
     useEffect(() => {
         if(memoID && currentMemo) {
