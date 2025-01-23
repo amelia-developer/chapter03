@@ -11,8 +11,8 @@ const Join = () => {
     const [inputType, setInputType] = useState("password")
 
     // 상태구독
-    const joinID = useSelector(state => state.join.joinID)
-    const joinPW = useSelector(state => state.join.joinPW)
+    // const joinID = useSelector(state => state.join.joinID)
+    // const joinPW = useSelector(state => state.join.joinPW)
 
     const [isloading, setIsloading] = useState(false) // 로딩
     
