@@ -108,7 +108,7 @@ const MonthDateField = () => {
     dispatch(resetLoginStatus(false))
     navigate(`/`)
   }
-console.log(`date화면에서 loginStatus = ${loginStatus}`);
+// console.log(`date화면에서 loginStatus = ${loginStatus}`);
 
   const onWeather = (param) => {
     setIsWeather(param)

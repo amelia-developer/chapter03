@@ -21,20 +21,23 @@ const Login = () => {
             joinPW: joinRef.current[1].value
         }
         dispatch(fetchSetLogin(loginInfo))
-            .then((isloginSuccessful) => { // isloginSuccessful이 변수에는 fetchSetLogin을 디스패치한(=promise결과를) 내용을 담는다
-                if(isloginSuccessful) {
+            // .then((isloginSuccessful) => { // isloginSuccessful이 변수에는 fetchSetLogin을 디스패치한(=promise결과를) 내용을 담는다
+            .then((response) => {
+// console.log(`response = ${JSON.stringify(response)}`);
+                // if(isloginSuccessful) {
+                if(response && response.token) { // 🔥🔥🔥왜왜왜!! fetchSetLogin 액션에 응답 잘만받아오는데..!!
+                    localStorage.setItem('token', response.token) // 토큰 저장
                     setTimeout(() => { // 로딩
                         setIsloading(true)
                     }, 3000)    
                     navigate(`/date`)
-console.log(`로그인성공했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
+// console.log(`로그인성공했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
                 } else {
                     alert(`id 또는 pw를 확인해주세요`)
 // console.log(`loginInfo = ${JSON.stringify(loginInfo)}`);
-console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
+// console.log(`로그인실패했을때 isloginSuccessful = ${JSON.stringify(isloginSuccessful)}`);
                 }
-            })
-        
+            }) 
     }
 
     const onJoinStart = () => {

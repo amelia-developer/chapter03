@@ -24,9 +24,9 @@ export const setPWjoin = (joinPW) => ({
     payload: joinPW
 })
 
-export const loginStatus = (loginStatus, currentID) => ({
+export const loginStatus = (loginStatus, currentID, token) => ({
     type: LOGIN_SUCCESS,
-    payload: {loginStatus, currentID}
+    payload: {loginStatus, currentID, token}
 })
 
 export const resetLoginStatus = (payload) => ({ // 파라미터없는 액션생성자: 액션의타입만을 이용해 상태업데이트 = 고정된 값을 설정할때
@@ -102,52 +102,81 @@ export const fetchMultipleID = (multipleID) => {
     }
 }
 
-// 로그인 액션
+// 로그인 액션 -> jwt 기반 로그인액션으로 변경2025-02-03
 export const fetchSetLogin = (loginInfo) => {
-    return dispatch => {
+    return async dispatch => {
         // return new Promise((resolve, reject) => { ... }) 해준이유는 비동기작업의 결과 명시적으로 처리할라고
-        // bcrypt.compare가 콜백을 사용해서 결과를 반환하는 비동기함수임
-        return new Promise((resolve, reject) => { // 이렇게하면 promise를 반환하겠다 라는거임
-            const {joinID, joinPW} = loginInfo
-            
-            // id조회
-            axios.get(`https://lava-handy-jackal.glitch.me/join`)
-                .then(response => {
-// console.log(`response.data = ${JSON.stringify(response.data)}`);               
-                    const user = response.data.find(u => u.joinID === joinID)
+
+        // 2025-02-03 jwt방식
+            try {
+                const {joinID,joinPW} = loginInfo
+
+                const response = await axios.post(`http://localhost:3000/login`, {joinID, joinPW}, { headers: { 'Content-Type': 'application/json' }})
+// console.log(`로긴응답데이터response = ${JSON.stringify(response.data)}`)
+                const {token, user} = response.data // 여기서user랑 token은 백엔드가 로그인 요청에대한 응답으로 보낸 데이터임
+// console.log(`token = ${JSON.stringify(token)}`);
 // console.log(`user = ${JSON.stringify(user)}`);
-                    if(!user) {
-                        alert(`id가 존재하지 않습니다`) 
-                        resolve(false)   
-                    } else {
-                        // pw해시 비교
-                        bcrypt.compare(joinPW, user.joinPW, (err, isMatch) => {
-// console.log(`isMatch = ${JSON.stringify(isMatch)}`);
-                            if(err) {
-                                console.error(`비밀번호 비교 중 에러 발생`)
-                                reject(err) // 에러반환
-                            }
+                if(token && user) {
+                    localStorage.setItem('jwtToken', token) // 이게 토큰저장하는거임
+                    dispatch(loginStatus(true, user.joinID, token)) // 로그인상태업데이트
+console.log(`로그인성공성공성공성공`)
+                    return {token, user}
+                } else {
+                    alert(`로그인실패실패실패실패`)
+                    return {token: null, user: null}
+                }
+            } catch(error) {
+                console.error(`로그인에러 ${error}`)
+                alert(`로그인 중 오류발생오류발생오류발생`)
+                return {token: null, user: null}
+            }
+
+
+
+        // 2025-02-03 bcrypt방식
+        // bcrypt.compare가 콜백을 사용해서 결과를 반환하는 비동기함수임
+//         return new Promise((resolve, reject) => { // 이렇게하면 promise를 반환하겠다 라는거임
+//             const {joinID, joinPW} = loginInfo
+            
+//             // id조회
+//             axios.get(`https://lava-handy-jackal.glitch.me/join`)
+//                 .then(response => {
+// // console.log(`response.data = ${JSON.stringify(response.data)}`);               
+//                     const user = response.data.find(u => u.joinID === joinID)
+// // console.log(`user = ${JSON.stringify(user)}`);
+//                     if(!user) {
+//                         alert(`id가 존재하지 않습니다`) 
+//                         resolve(false)
+//                     } else {
+//                         // pw해시 비교
+//                         bcrypt.compare(joinPW, user.joinPW, (err, isMatch) => {
+// // console.log(`isMatch = ${JSON.stringify(isMatch)}`);
+//                             if(err) {
+//                                 console.error(`비밀번호 비교 중 에러 발생`)
+//                                 reject(err) // 에러반환
+//                             }
                             
-                            if(isMatch) {
-                                console.log(`로그인 성공`)
-                                dispatch(loginStatus(true, user.joinID))
-                                resolve(true) // 로그인성공
-                            } else {
-// console.log(`isMatch = ${JSON.stringify(isMatch)}`);
-                                console.log(`로그인 실패`)
-                                dispatch(loginStatus(false, ''))
-                                resolve(false) // 로그인실패
-                            }
-                        })                    
-                    }
-                })
-                .catch(error => {
-                    console.error(error)
-                    return false
-                })
-        }) 
+//                             if(isMatch) {
+//                                 console.log(`로그인 성공`)
+//                                 dispatch(loginStatus(true, user.joinID))
+//                                 resolve(true) // 로그인성공
+//                             } else {
+// // console.log(`isMatch = ${JSON.stringify(isMatch)}`);
+//                                 console.log(`로그인 실패`)
+//                                 dispatch(loginStatus(false, ''))
+//                                 resolve(false) // 로그인실패
+//                             }
+//                         })                    
+//                     }
+//                 })
+//                 .catch(error => {
+//                     console.error(error)
+//                     return false
+//                 })
+//         }) 
     }
 }
+
 
 // 클릭한날짜에 대한 메모post액션(입력)
 export const fetchClickDateNumber = (selectDate, memoContent, loginID) => {
