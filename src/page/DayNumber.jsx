@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { insertDateNumber, fetchAllMemoList, fetchMemoList, fetchModifyMemo } from '../redux/joinAction'
 import { useDispatch, useSelector } from 'react-redux'
-import { current } from '@reduxjs/toolkit'
 import Memo from './Memo'
 
 function DayNumber(props) {
@@ -179,7 +178,7 @@ console.log(`box.style.transform = ${box.style.transform}`)
         if(memoID && currentMemo) {
             dispatch(fetchModifyMemo({id: memoID, memoContent: currentMemo}))
         }
-    }, [memoID, currentMemo])
+    }, [memoID, currentMemo, dispatch])
     return (
         <>
             {
@@ -208,7 +207,7 @@ console.log(`box.style.transform = ${box.style.transform}`)
                                 // if(isPrevMonth) { // 첫번째주(=0)이면서 첫번째주의 수가 7보다(=일주일은 7일)보다 큰수가 있으면
                                     return  <td key={idx} className={isPrevMonth ? "prev" : isNextMonth ? "next" : isToday ? 'today': ''} onClick={() => onHandleDateNumber(element)}>{day}
                                                 {
-                                                    selectDate ?. year === year && selectDate ?. month === month && selectDate ?. day === day && closeStatus === false?
+                                                    selectDate?.year === year && selectDate?.month === month && selectDate?.day === day && closeStatus === false?
                                                     <Memo   currentMemo={currentMemo}
                                                             memoList={memoList}
                                                             setMemoID={setMemoID}

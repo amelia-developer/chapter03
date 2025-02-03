@@ -1,4 +1,3 @@
-import { act } from 'react';
 import { combineReducers } from 'redux';
 
 const initialState = {

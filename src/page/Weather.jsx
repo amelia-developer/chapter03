@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 const Weather = ({onWeatherHandler, onCityHandler}) => {
     const cityValue = 'seoul'
@@ -6,9 +6,9 @@ const Weather = ({onWeatherHandler, onCityHandler}) => {
     const [weatherValue, setWeatherValue] = useState('')
     const [daysWeatherValue, setDaysWeatherValue] = useState('')
 
-    const sendWeatherParent = () => {
+    const sendWeatherParent = useCallback(() => {
         onWeatherHandler(daysWeatherValue)
-    }
+    }, [daysWeatherValue, onWeatherHandler])
 
     const getWeather = async() => {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${key}&units=metric&lang=KR`)
@@ -74,9 +74,9 @@ const Weather = ({onWeatherHandler, onCityHandler}) => {
         setDaysWeatherValue(data)
     }
 
-    const sendWeatherCity = () => {
+    const sendWeatherCity = useCallback(() => {
         onCityHandler(weatherValue)
-    }
+    },[weatherValue, onCityHandler])
 
     useEffect(() => {
         getWeather()
@@ -86,7 +86,7 @@ const Weather = ({onWeatherHandler, onCityHandler}) => {
     useEffect(() => {
         sendWeatherParent()
         sendWeatherCity()
-    }, [daysWeatherValue, weatherValue])
+    }, [daysWeatherValue, weatherValue, sendWeatherParent, sendWeatherCity])
 
     return (
         <>
