@@ -14,7 +14,7 @@
 </p>
 <br>
 <p align="center">
-   <h1><strong>React-Calendsr-Memo-Weather 프로젝트</strong>📅📝🌤️</h1>
+   <h1><strong>React-Calender-Memo-Weather 프로젝트</strong>📅📝🌤️</h1>
 
   <ul>
     <li><span>목표: 매일 사용하는 네이버 캘린더에서 아이디어를 착안하여, react와 redux를 활용한 상태관리 및 API활용</span></li>
