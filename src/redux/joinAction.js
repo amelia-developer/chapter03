@@ -111,7 +111,7 @@ export const fetchSetLogin = (loginInfo) => {
             try {
                 const {joinID,joinPW} = loginInfo
 
-                const response = await axios.post(`http://localhost:3000/login`, {joinID, joinPW}, { headers: { 'Content-Type': 'application/json' }})
+                const response = await axios.post(`https://lava-handy-jackal.glitch.me/login`, JSON.stringify({joinID, joinPW}), { headers: { 'Content-Type': 'application/json' }})
 // console.log(`로긴응답데이터response = ${JSON.stringify(response.data)}`)
                 const {token, user} = response.data // 여기서user랑 token은 백엔드가 로그인 요청에대한 응답으로 보낸 데이터임
 // console.log(`token = ${JSON.stringify(token)}`);
@@ -126,7 +126,7 @@ console.log(`로그인성공성공성공성공`)
                     return {token: null, user: null}
                 }
             } catch(error) {
-                console.error(`로그인에러 ${error}`)
+                console.error(`로그인에러 ${error.message}`)
                 alert(`로그인 중 오류발생오류발생오류발생`)
                 return {token: null, user: null}
             }
